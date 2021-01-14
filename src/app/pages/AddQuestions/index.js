@@ -860,7 +860,9 @@ function AddQuestions() {
                                     size='large'
                                     htmlType='submit'
                                     style={{ borderRadius: '6px' }}
-                                // onClick={() => { history.push('/add-questions/56677hghg') }}
+                                    onClick={
+                                        () => { history.push(`/preview-test/${id}`) }
+                                    }
                                 >
                                     <CheckOutlined /> Xong
                     </Button>

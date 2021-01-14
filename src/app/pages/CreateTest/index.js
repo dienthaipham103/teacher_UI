@@ -114,7 +114,19 @@ function CreateTest() {
             // setAddLoading(true);
             let res = await createQuizAPI(data);
             console.log(res);
-            if (res.code === 1) {
+            console.log('CHECK >>>>>>>>>>>>>>>>>>>>>>>>>>>>>', fileList);
+            
+            // if there is no image uploaded
+            if (fileList.length === 0){
+                notification.success({
+                    message: 'Tạo đề thành công!',
+                    duration: "2"
+                });
+                // history.push("/student-list");
+                console.log('QUIZ ID: ', res.data._id);
+                history.push(`/add-questions/${res.data._id}`);
+            }
+            else if (res.code === 1) {
                 let res1 = await getImageUrlAPI({ id: res.data._id });
                 console.log(res1);
                 if (res1.code === 1) {
@@ -228,6 +240,7 @@ function CreateTest() {
                                     <Form.Item
                                         name='subject'
                                         label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Môn</span>}
+                                        rules={[{ required: true, message: 'Thông tin bắt buộc' }]}
                                     // rules={[{ type: "email", required: true, message: <p style={{ color: '#F82C4D' }}>Thông tin bắt buộc</p> }]}
                                     // validateStatus={emailValidate ? "error" : null}
                                     // help={emailValidate ? "Email đã được đăng ký!" : null}
