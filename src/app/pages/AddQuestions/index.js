@@ -951,51 +951,19 @@ function AddQuestions() {
                                         >
                                             <div
                                                 style={{
-                                                    // display: 'flex',
-                                                    // justifyContent: 'space-around',
                                                     marginTop: '20px',
-                                                    // marginLeft: '30px', 
                                                     marginBottom: questionImages[current - 1].fileList.length >= 1 ? '40px' : '20px'
                                                 }}
                                             >
 
-                                                {/* <Upload
-                                                    className="avatar-uploader"
-                                                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                                                    listType="picture-card"
-                                                    fileList={questionImages[current - 1].fileList}
-                                                    showUploadList={true}
-                                                    onPreview={handlePreview}
-                                                    onChange={handleChange}
-                                                    onClick={() => {
-                                                        if (current === questions.length) {
-                                                            console.log("GGGGGGGGGGGGGGGGGGGGG")
-                                                            addQuestion(null, "image")
-                                                        }
-                                                    }
-                                                    }
-                                                >
-                                                    {questionImages[current - 1].fileList.length >= 1 ?
-                                                        null
-                                                        : uploadButton}
-                                                </Upload> */}
                                                 {
                                                     questions[current - 1].imageAvailable === true ?
                                                         <div>
                                                             {
                                                                 questionImages[current - 1].fileList.length > 0 ?
-                                                                    // <img src={questionImages[current - 1].fileList[0].url} style={{ width: "100%" }} />
-                                                                    // <img src={questions[current - 1].image} style={{ width: "100%" }} />
                                                                     <img src={`${questions[current - 1].image}?${Date.now()}`} style={{ width: "100%" }} />
-                                                                    // <img src="https://wiiquiz.s3-ap-southeast-1.amazonaws.com/quiz/5f85584906427b5500f7e4ee/1/2/ssdvvv/5ff1719e0720850eb77405dc.png" style={{ width: "100%" }} />
-                                                                    // <p>Hello</p>
                                                                     : null
                                                             }
-                                                            {/* {
-                                                                questionImages[current - 1].fileList[0].url !== undefined ?
-                                                                    <img src={questionImages[current - 1].fileList[0].url} style={{ width: "100%" }} />
-                                                                    : null
-                                                            } */}
                                                         </div>
                                                         :
                                                         <Upload

@@ -27,8 +27,8 @@ function getBase64(file) {
 }
 
 const layout2 = {
-    labelCol: { span: 10 },
-    wrapperCol: { span: 14 }
+    labelCol: { span: 14 },
+    wrapperCol: { span: 10 }
 };
 
 const layout3 = {
@@ -47,6 +47,7 @@ function CreateTest() {
     const [loading, setLoading] = useState(false);
     const [type, setType] = useState("EXAM");
 
+    const [imageAvailable, setImageAvailable] = useState(false);
     const [previewVisible, setPreviewVisible] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
@@ -71,6 +72,8 @@ function CreateTest() {
     };
     const handleChange = ({ fileList }) => {
         setFileList(fileList)
+        // will do something here
+        setImageAvailable(true);
         console.log('IMAGE OBJECT: ', fileList[0])
     };
     const uploadButton = (
@@ -82,7 +85,7 @@ function CreateTest() {
 
     const [form] = Form.useForm();
 
-    const getDate = (t, d) =>{
+    const getDate = (t, d) => {
         const hour = t.toDate().getHours();
         const minute = t.toDate().getMinutes();
         const second = t.toDate().getSeconds();
@@ -109,15 +112,15 @@ function CreateTest() {
             // numberOfQuestions: 0
         }
 
-      
+
         try {
             // setAddLoading(true);
             let res = await createQuizAPI(data);
             console.log(res);
             console.log('CHECK >>>>>>>>>>>>>>>>>>>>>>>>>>>>>', fileList);
-            
+
             // if there is no image uploaded
-            if (fileList.length === 0){
+            if (fileList.length === 0) {
                 notification.success({
                     message: 'Tạo đề thành công!',
                     duration: "2"
@@ -131,13 +134,11 @@ function CreateTest() {
                 console.log(res1);
                 if (res1.code === 1) {
                     // ---------------------//
-                    // Create an object of formData 
-                    const formData = new FormData();
 
                     // image object
                     const imageFile = fileList[0]
 
-                 
+
                     let res2 = await axios.put(res1.data, imageFile.originFileObj, {
                         headers: { 'content-type': 'image' }
                     });
@@ -156,15 +157,12 @@ function CreateTest() {
                     // -------------------------//
                 }
 
-
-
-
-
             }
 
 
-
-        } catch (error) { }
+        } catch (error) {
+            console.log('Error when creating quiz: ', error)
+        }
     };
 
 
@@ -205,6 +203,7 @@ function CreateTest() {
             >
 
                 <Row
+                    gutter={[16, 24]}
                     style={{ marginTop: '30px' }}
                     justify="space-around"
                     align="top"
@@ -216,10 +215,10 @@ function CreateTest() {
                         <Card
                             title='Thông tin đề'
                             bordered={false}
-                            style={{ minWidth: '210px', width: '98%' }}
+                            style={{ minWidth: '210px', width: '100%', paddingRight: '10px' }}
                         >
                             <Row>
-                                <Col span={16}>
+                                <Col span={12}>
                                     <Form.Item
                                         name='quizname'
                                         label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Tên đề</span>}
@@ -232,11 +231,11 @@ function CreateTest() {
                                     </Form.Item>
 
                                 </Col>
-                                <Col span={8}>
+                                <Col span={12}>
                                 </Col>
                             </Row>
                             <Row>
-                                <Col span={16}>
+                                <Col span={12}>
                                     <Form.Item
                                         name='subject'
                                         label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Môn</span>}
@@ -257,40 +256,25 @@ function CreateTest() {
                                         </Select>
                                     </Form.Item>
                                 </Col>
-                                <Col span={8}>
+                                <Col span={12}>
                                     <Form.Item
-                                        name='grade'
-                                        // label='Lớp'
-                                        label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Lớp</span>}
+                                        name='duration'
+                                        label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Thời gian làm bài (phút)</span>}
                                         rules={[{ required: true, message: 'Thông tin bắt buộc' }]}
+                                        style={{ borderRadius: '7px' }}
                                     >
-                                        {/* <InputNumber min='1' max='12' type='number' style={{height: '40px'}} /> */}
-                                        <Select style={{ width: 120, fontSize: '16px', fontWeight: '900' }} placeholder="Chọn lớp"
-                                            size="default">
-                                            <Option value="1">1</Option>
-                                            <Option value="2">2</Option>
-                                            <Option value="3">3</Option>
-                                            <Option value="4">4</Option>
-                                            <Option value="5">5</Option>
-                                            <Option value="6">6</Option>
-                                            <Option value="7">7</Option>
-                                            <Option value="8">8</Option>
-                                            <Option value="9">9</Option>
-                                            <Option value="10">10</Option>
-                                            <Option value="11">11</Option>
-                                            <Option value="12">12</Option>
-                                            <Option value="13">Khác</Option>
-                                        </Select>
+                                        <Input style={{ height: '36px', fontSize: '16px', fontWeight: '400', width: '50%' }}
+                                        />
                                     </Form.Item>
+
                                 </Col>
                             </Row>
 
-                            {type == "EXAM" ?
+                            {/* {type == "EXAM" ?
                                 <Row>
                                     <Col span={16}>
                                         <Form.Item
                                             name="registerDuetime"
-                                            // label='Ngày sinh'
                                             label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Hết hạn đăng ký lúc</span>}
                                             rules={[{ required: true, message: 'Thông tin bắt buộc' }]}
                                         >
@@ -306,7 +290,6 @@ function CreateTest() {
                                     <Col span={8}>
                                         <Form.Item
                                             name="registerDuedate"
-                                            // label='Ngày sinh'
                                             label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Ngày</span>}
                                             rules={[{ required: true, message: 'Thông tin bắt buộc' }]}
                                         >
@@ -328,12 +311,10 @@ function CreateTest() {
                                     <Col span={16}>
                                         <Form.Item
                                             name="openDuetime"
-                                            // label='Ngày sinh'
                                             label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Đề thi mở lúc</span>}
                                             rules={[{ required: true, message: 'Thông tin bắt buộc' }]}
                                         >
                                             <TimePicker
-                                                // onChange={onChange} 
                                                 size="large"
                                                 style={{ height: '36px', borderRadius: '6px' }}
                                                 defaultOpenValue={moment('00:00:00', 'HH:mm:ss')}
@@ -344,7 +325,6 @@ function CreateTest() {
                                     <Col span={8}>
                                         <Form.Item
                                             name="openDueDate"
-                                            // label='Ngày sinh'
                                             label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Ngày</span>}
                                             rules={[{ required: true, message: 'Thông tin bắt buộc' }]}
                                         >
@@ -359,10 +339,10 @@ function CreateTest() {
                                     </Col>
                                 </Row>
                                 : null
-                            }
+                            } */}
 
 
-                            {type == "EXAM" ?
+                            {/* {type == "EXAM" ?
                                 <Row>
                                     <Col span={16}>
                                         <Form.Item
@@ -372,7 +352,6 @@ function CreateTest() {
                                             style={{ borderRadius: '7px' }}
                                         >
                                             <Input style={{ height: '36px', fontSize: '16px', fontWeight: '400', width: '25%' }}
-                                            // onChange={onFullnameChanged} 
                                             />
                                         </Form.Item>
 
@@ -381,31 +360,160 @@ function CreateTest() {
                                     </Col>
                                 </Row>
                                 : null
+                            } */}
+
+                            {
+                                type === "PRACTICE" ?
+                                    <Row>
+                                        <Col span={12}>
+                                            {/* <Form.Item
+                                                name='duration'
+                                                label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Thời gian làm bài (phút)</span>}
+                                                rules={[{ required: true, message: 'Thông tin bắt buộc' }]}
+                                                style={{ borderRadius: '7px' }}
+                                            >
+                                                <Input style={{ height: '36px', fontSize: '16px', fontWeight: '400', width: '50%' }}
+                                                />
+                                            </Form.Item> */}
+                                            <Form.Item
+                                                name='grade'
+                                                // label='Lớp'
+                                                label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Lớp</span>}
+                                                rules={[{ required: true, message: 'Thông tin bắt buộc' }]}
+                                            >
+                                                {/* <InputNumber min='1' max='12' type='number' style={{height: '40px'}} /> */}
+                                                <Select style={{ width: 120, fontSize: '16px', fontWeight: '900' }} placeholder="Chọn lớp"
+                                                    size="default">
+                                                    <Option value="1">1</Option>
+                                                    <Option value="2">2</Option>
+                                                    <Option value="3">3</Option>
+                                                    <Option value="4">4</Option>
+                                                    <Option value="5">5</Option>
+                                                    <Option value="6">6</Option>
+                                                    <Option value="7">7</Option>
+                                                    <Option value="8">8</Option>
+                                                    <Option value="9">9</Option>
+                                                    <Option value="10">10</Option>
+                                                    <Option value="11">11</Option>
+                                                    <Option value="12">12</Option>
+                                                    <Option value="13">Khác</Option>
+                                                </Select>
+                                            </Form.Item>
+
+                                        </Col>
+                                        <Col span={12}>
+                                        </Col>
+                                    </Row>
+                                    : null
                             }
 
-
-                            <Row>
-                                <Col span={16}>
-                                    <Form.Item
-                                        name='duration'
-                                        label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Thời gian làm bài (phút)</span>}
-                                        rules={[{ required: true, message: 'Thông tin bắt buộc' }]}
-                                        style={{ borderRadius: '7px' }}
-                                    >
-                                        <Input style={{ height: '36px', fontSize: '16px', fontWeight: '400', width: '25%' }}
-                                        // onChange={onFullnameChanged} 
-                                        />
-                                    </Form.Item>
-
-                                </Col>
-                                <Col span={8}>
-                                </Col>
-                            </Row>
-
-
+                            {
+                                type === "EXAM" ?
+                                    <Row>
+                                        <Col span={12}>
+                                            {/* <Form.Item
+                                                name='duration'
+                                                label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Thời gian làm bài (phút)</span>}
+                                                rules={[{ required: true, message: 'Thông tin bắt buộc' }]}
+                                                style={{ borderRadius: '7px' }}
+                                            >
+                                                <Input style={{ height: '36px', fontSize: '16px', fontWeight: '400', width: '50%' }}
+                                                />
+                                            </Form.Item> */}
+                                            <Form.Item
+                                                name='grade'
+                                                // label='Lớp'
+                                                label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Lớp</span>}
+                                                rules={[{ required: true, message: 'Thông tin bắt buộc' }]}
+                                            >
+                                                {/* <InputNumber min='1' max='12' type='number' style={{height: '40px'}} /> */}
+                                                <Select style={{ width: 120, fontSize: '16px', fontWeight: '900' }} placeholder="Chọn lớp"
+                                                    size="default">
+                                                    <Option value="1">1</Option>
+                                                    <Option value="2">2</Option>
+                                                    <Option value="3">3</Option>
+                                                    <Option value="4">4</Option>
+                                                    <Option value="5">5</Option>
+                                                    <Option value="6">6</Option>
+                                                    <Option value="7">7</Option>
+                                                    <Option value="8">8</Option>
+                                                    <Option value="9">9</Option>
+                                                    <Option value="10">10</Option>
+                                                    <Option value="11">11</Option>
+                                                    <Option value="12">12</Option>
+                                                    <Option value="13">Khác</Option>
+                                                </Select>
+                                            </Form.Item>
+                                        </Col>
+                                        <Col span={12}>
+                                            <Form.Item
+                                                name='flutation'
+                                                label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Được phép trễ (phút)</span>}
+                                                rules={[{ required: true, message: 'Thông tin bắt buộc' }]}
+                                                style={{ borderRadius: '7px' }}
+                                            >
+                                                <Input style={{ height: '36px', fontSize: '16px', fontWeight: '400', width: '50%' }}
+                                                // onChange={onFullnameChanged} 
+                                                />
+                                            </Form.Item>
+                                        </Col>
+                                    </Row>
+                                    : null
+                            }
 
                         </Card>
 
+                        {
+                            type == "EXAM" ?
+                                <Row gutter={[16, 24]}>
+                                    <Col span={12}>
+                                        <Card
+                                            title='Hạn đăng ký'
+                                            bordered={false}
+                                            style={{ minWidth: '210px', width: '100%', marginTop: '30px' }}
+                                        >
+                                            <Col span={16}>
+                                                <Form.Item
+                                                    name="registerDuetime"
+                                                    label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Thời gian</span>}
+                                                    rules={[{ required: true, message: 'Thông tin bắt buộc' }]}
+                                                >
+                                                    <Input style={{ height: '36px', fontSize: '16px', fontWeight: '400', width: '50%' }}
+                                                    // onChange={onFullnameChanged} 
+                                                    />
+                                                </Form.Item>
+
+                                            </Col>
+                                            <Col span={8}>
+                                                <Form.Item
+                                                    name="registerDuedate"
+                                                    label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Ngày</span>}
+                                                    rules={[{ required: true, message: 'Thông tin bắt buộc' }]}
+                                                >
+                                                    <DatePicker
+                                                        format="YYYY/MM/DD"
+                                                        size="large"
+                                                        style={{ height: '36px', borderRadius: '6px' }}
+                                                        placeholder=""
+                                                    />
+                                                </Form.Item>
+
+                                            </Col>
+                                        </Card>
+                                    </Col>
+                                    <Col span={12}>
+                                        <Card
+                                            title='Thời gian mở đề'
+                                            bordered={false}
+                                            style={{ minWidth: '210px', width: '100%', marginTop: '30px' }}
+                                        >
+                                            Hello
+                                        </Card>
+                                    </Col>
+                                </Row>
+
+                                : null
+                        }
 
                     </Col>
                     <Col span={5}>
@@ -430,7 +538,7 @@ function CreateTest() {
                                 // justifyContent: 'center'
                             }}
                         >
-                            <Upload
+                            {/* <Upload
                                 action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                                 listType="picture-card"
                                 fileList={fileList}
@@ -438,7 +546,38 @@ function CreateTest() {
                                 onChange={handleChange}
                             >
                                 {fileList.length >= 1 ? null : uploadButton}
-                            </Upload>
+                            </Upload> */}
+                            {
+                                imageAvailable === true ?
+                                    <div>
+                                        {
+                                            fileList.length > 0 ?
+                                                // <img src={`${questions[current - 1].image}?${Date.now()}`} style={{ width: "100%" }} />
+                                                <p>Already uploaded</p>
+                                                : null
+                                        }
+                                    </div>
+                                    :
+                                    <Upload
+                                        className="avatar-uploader"
+                                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                                        listType="picture-card"
+                                        fileList={fileList}
+                                        onPreview={handlePreview}
+                                        onChange={handleChange}
+                                    // onClick={() => {
+                                    //     if (current === questions.length) {
+                                    //         console.log("GGGGGGGGGGGGGGGGGGGGG")
+                                    //         addQuestion(null, "image")
+                                    //     }
+                                    // }
+                                    // }
+                                    >
+                                        {fileList.length >= 1 ?
+                                            null
+                                            : uploadButton}
+                                    </Upload>
+                            }
                             <Modal
                                 visible={previewVisible}
                                 title={previewTitle}
