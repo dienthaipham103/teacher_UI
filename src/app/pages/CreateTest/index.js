@@ -8,7 +8,7 @@ import { useHistory } from "react-router-dom";
 import { TimePicker } from 'antd';
 import moment from 'moment';
 
-import { LoadingOutlined, PlusOutlined, FileImageOutlined } from '@ant-design/icons';
+import { LoadingOutlined, PlusOutlined, FileImageOutlined, HistoryOutlined, EditOutlined } from '@ant-design/icons';
 
 import {
     createQuizAPI,
@@ -34,6 +34,11 @@ const layout2 = {
 const layout3 = {
     labelCol: { span: 0 },
     wrapperCol: { span: 24 }
+};
+
+const layout4 = {
+    labelCol: { span: 10 },
+    wrapperCol: { span: 14 }
 };
 
 function CreateTest() {
@@ -62,6 +67,7 @@ function CreateTest() {
 
     const handleCancel = () => setPreviewVisible(false);
     const handlePreview = async file => {
+        console.log('FILE IN PREVIEW: ', file);
         if (!file.url && !file.preview) {
             file.preview = await getBase64(file.originFileObj);
         }
@@ -70,11 +76,19 @@ function CreateTest() {
         setPreviewVisible(true);
         setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
     };
-    const handleChange = ({ fileList }) => {
-        setFileList(fileList)
+    const handleChange = async ({ fileList }) => {
+        setFileList(fileList);
+
+        // setPreviewImage(fileList[0].url || fileList[0].preview);
+        if (!fileList[0].url && !fileList[0].preview) {
+            fileList[0].preview = await getBase64(fileList[0].originFileObj);
+        }
+        setPreviewImage(fileList[0].url || fileList[0].preview);
+
         // will do something here
         setImageAvailable(true);
-        console.log('IMAGE OBJECT: ', fileList[0])
+        console.log('IMAGE OBJECT: ', fileList[0]);
+        console.log('PREVIEW IMAGE: ', previewImage);
     };
     const uploadButton = (
         <div>
@@ -90,14 +104,20 @@ function CreateTest() {
         const minute = t.toDate().getMinutes();
         const second = t.toDate().getSeconds();
         const year = d.toDate().getFullYear();
-        const month = d.toDate().getMonth() - 1;
-        const day = d.toDate().getDay();
+        const month = d.toDate().getMonth();
+        const day = d.toDate().getDate();
+        console.log('y: ', year);
+        console.log('m: ', month);
+        console.log('d: ', day);
         return new Date(year, month, day, hour, minute, second)
     }
 
     const onFinish = async (values) => {
         // values.birthday = values.birthday.format('YYYY/MM/DD');
-        console.log(values);
+        console.log("VALUES: ", values);
+        // console.log("register VALUES: ", getDate(values.registerDuetime, values.registerDuedate));
+        // console.log("quizOpen VALUES: ", getDate(values.openDuetime, values.openDueDate));
+
         const data = {
             type: type,
             name: values.quizname,
@@ -119,46 +139,53 @@ function CreateTest() {
             console.log(res);
             console.log('CHECK >>>>>>>>>>>>>>>>>>>>>>>>>>>>>', fileList);
 
-            // if there is no image uploaded
-            if (fileList.length === 0) {
-                notification.success({
-                    message: 'Tạo đề thành công!',
+            if (res.message === "Quiz Name is already used, please choose another Name.") {
+                notification.error({
+                    message: 'Tên đề đã tồn tại!',
                     duration: "2"
                 });
-                // history.push("/student-list");
-                console.log('QUIZ ID: ', res.data._id);
-                history.push(`/add-questions/${res.data._id}`);
             }
-            else if (res.code === 1) {
-                let res1 = await getImageUrlAPI({ id: res.data._id });
-                console.log(res1);
-                if (res1.code === 1) {
-                    // ---------------------//
-
-                    // image object
-                    const imageFile = fileList[0]
-
-
-                    let res2 = await axios.put(res1.data, imageFile.originFileObj, {
-                        headers: { 'content-type': 'image' }
+            else {
+                // if there is no image uploaded
+                if (fileList.length === 0) {
+                    notification.success({
+                        message: 'Tạo đề thành công!',
+                        duration: "2"
                     });
-                    console.log('SEND IMAGE', res2)
+                    // history.push("/student-list");
+                    console.log('QUIZ ID: ', res.data._id);
+                    history.push(`/add-questions/${res.data._id}`);
+                }
+                else if (res.code === 1) {
+                    let res1 = await getImageUrlAPI({ id: res.data._id });
+                    console.log(res1);
+                    if (res1.code === 1) {
+                        // ---------------------//
 
-                    if (res2.statusText === "OK") {
-                        notification.success({
-                            message: 'Tạo đề thành công!',
-                            duration: "2"
+                        // image object
+                        const imageFile = fileList[0]
+
+
+                        let res2 = await axios.put(res1.data, imageFile.originFileObj, {
+                            headers: { 'content-type': 'image' }
                         });
-                        // history.push("/student-list");
-                        console.log('QUIZ ID: ', res.data._id);
-                        history.push(`/add-questions/${res.data._id}`);
+                        console.log('SEND IMAGE', res2)
+
+                        if (res2.statusText === "OK") {
+                            notification.success({
+                                message: 'Tạo đề thành công!',
+                                duration: "2"
+                            });
+                            // history.push("/student-list");
+                            console.log('QUIZ ID: ', res.data._id);
+                            history.push(`/add-questions/${res.data._id}`);
+                        }
+
+                        // -------------------------//
                     }
 
-                    // -------------------------//
                 }
-
             }
-
 
         } catch (error) {
             console.log('Error when creating quiz: ', error)
@@ -246,13 +273,13 @@ function CreateTest() {
                                     >
                                         <Select style={{ width: 120, fontSize: '16px', fontWeight: '900' }} placeholder="Chọn môn"
                                             size="default">
-                                            <Option value="1">Toán</Option>
-                                            <Option value="2">Lý</Option>
-                                            <Option value="3">Hóa</Option>
-                                            <Option value="4">Sinh</Option>
-                                            <Option value="5">Sử</Option>
-                                            <Option value="6">Địa</Option>
-                                            <Option value="13">Khác</Option>
+                                            <Option value="Toán">Toán</Option>
+                                            <Option value="Lý">Lý</Option>
+                                            <Option value="Hóa">Hóa</Option>
+                                            <Option value="Sinh">Sinh</Option>
+                                            <Option value="Sử">Sử</Option>
+                                            <Option value="Địa">Địa</Option>
+                                            <Option value="Khác">Khác</Option>
                                         </Select>
                                     </Form.Item>
                                 </Col>
@@ -465,49 +492,181 @@ function CreateTest() {
 
                         {
                             type == "EXAM" ?
-                                <Row gutter={[16, 24]}>
+                                <Row gutter={[16, 0]}>
                                     <Col span={12}>
                                         <Card
-                                            title='Hạn đăng ký'
+                                            title={<span style={{ color: '#411EAF', fontSize: '18px', fontWeight: '900' }}><HistoryOutlined style={{ marginRight: '10px' }} />
+                                                    Hạn đăng ký
+                                                    </span>}
                                             bordered={false}
                                             style={{ minWidth: '210px', width: '100%', marginTop: '30px' }}
                                         >
-                                            <Col span={16}>
-                                                <Form.Item
-                                                    name="registerDuetime"
-                                                    label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Thời gian</span>}
-                                                    rules={[{ required: true, message: 'Thông tin bắt buộc' }]}
-                                                >
-                                                    <Input style={{ height: '36px', fontSize: '16px', fontWeight: '400', width: '50%' }}
-                                                    // onChange={onFullnameChanged} 
-                                                    />
-                                                </Form.Item>
+                                            {/* <Form.Item
+                                                {...layout4}
+                                                label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Thời gian</span>}
+                                                style={{ marginBottom: 0 }}
+                                            >
+                                                <Input.Group compact>
+                                                    <Form.Item
+                                                        noStyle
+                                                        name="register_hour"
+                                                        rules={[{ required: true }]}
+                                                        style={{ display: 'inline-block', width: 'calc(50% - 2px)' }}
+                                                    >
+                                                        <InputNumber min={0} max={24}
+                                                            placeholder="Giờ"
+                                                            style={{
+                                                                height: '34px', fontSize: '16px', fontWeight: '400',
+                                                                borderRadius: '5px', marginBottom: '20px', marginRight: '5px', width: '30%'
+                                                            }}
+                                                        />
+                                                    </Form.Item>
+                                                    <Form.Item
+                                                        noStyle
+                                                        name="register_minute"
+                                                        rules={[{ required: true }]}
+                                                        style={{ display: 'inline-block', width: 'calc(50% - 2px)' }}
+                                                    >
+                                                        <InputNumber min={0} max={60}
+                                                            placeholder="Phút"
+                                                            style={{
+                                                                height: '34px', fontSize: '16px', fontWeight: '400',
+                                                                borderRadius: '5px', marginBottom: '20px', marginRight: '5px', width: '30%'
+                                                            }}
+                                                        />
+                                                    </Form.Item>
+                                                    <Form.Item
+                                                        noStyle
+                                                        name="register_second"
+                                                        rules={[{ required: true }]}
+                                                        style={{ display: 'inline-block', width: 'calc(50% - 2px)' }}
+                                                    >
+                                                        <InputNumber min={0} max={60}
+                                                            placeholder="Giây"
+                                                            style={{
+                                                                height: '34px', fontSize: '16px', fontWeight: '400', width: '25%',
+                                                                borderRadius: '5px', marginBottom: '20px'
+                                                            }}
+                                                        />
+                                                    </Form.Item>
+                                                </Input.Group>
 
-                                            </Col>
-                                            <Col span={8}>
-                                                <Form.Item
-                                                    name="registerDuedate"
-                                                    label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Ngày</span>}
-                                                    rules={[{ required: true, message: 'Thông tin bắt buộc' }]}
-                                                >
-                                                    <DatePicker
-                                                        format="YYYY/MM/DD"
-                                                        size="large"
-                                                        style={{ height: '36px', borderRadius: '6px' }}
-                                                        placeholder=""
-                                                    />
-                                                </Form.Item>
+                                            </Form.Item> */}
+                                            <Form.Item
+                                                {...layout4}
+                                                name="registerDuetime"
+                                                label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Thời gian</span>}
+                                                rules={[{ required: true, message: 'Thông tin bắt buộc' }]}
+                                            >
+                                                <TimePicker
+                                                    // onChange={onChange} 
+                                                    size="large"
+                                                    style={{ height: '36px', borderRadius: '6px' }}
+                                                    defaultOpenValue={moment('00:00:00', 'HH:mm:ss')}
+                                                />
+                                            </Form.Item>
 
-                                            </Col>
+
+                                            <Form.Item
+                                                {...layout4}
+                                                name="registerDuedate"
+                                                label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Ngày</span>}
+                                                rules={[{ required: true, message: 'Thông tin bắt buộc' }]}
+                                            >
+                                                <DatePicker
+                                                    format="YYYY/MM/DD"
+                                                    size="large"
+                                                    style={{ height: '36px', borderRadius: '6px' }}
+                                                    placeholder=""
+                                                />
+                                            </Form.Item>
                                         </Card>
                                     </Col>
                                     <Col span={12}>
                                         <Card
-                                            title='Thời gian mở đề'
+                                            title={<span style={{ color: 'green', fontSize: '18px', fontWeight: '900' }}><HistoryOutlined style={{ marginRight: '10px' }} />
+                                                    Thời gian mở đề
+                                                    </span>}
                                             bordered={false}
                                             style={{ minWidth: '210px', width: '100%', marginTop: '30px' }}
                                         >
-                                            Hello
+                                            {/* <Form.Item
+                                                {...layout4}
+                                                label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Thời gian</span>}
+                                                style={{ marginBottom: 0 }}
+                                            >
+                                                <Input.Group compact>
+                                                    <Form.Item
+                                                        noStyle
+                                                        name="open_hour"
+                                                        rules={[{ required: true }]}
+                                                        style={{ display: 'inline-block', width: 'calc(50% - 2px)' }}
+                                                    >
+                                                        <InputNumber min={0} max={24}
+                                                            placeholder="Giờ"
+                                                            style={{
+                                                                height: '34px', fontSize: '16px', fontWeight: '400',
+                                                                borderRadius: '5px', marginBottom: '20px', marginRight: '5px', width: '30%'
+                                                            }}
+                                                        />
+                                                    </Form.Item>
+                                                    <Form.Item
+                                                        noStyle
+                                                        name="open_minute"
+                                                        rules={[{ required: true }]}
+                                                        style={{ display: 'inline-block', width: 'calc(50% - 2px)' }}
+                                                    >
+                                                        <InputNumber min={0} max={60}
+                                                            placeholder="Phút"
+                                                            style={{
+                                                                height: '34px', fontSize: '16px', fontWeight: '400',
+                                                                borderRadius: '5px', marginBottom: '20px', marginRight: '5px', width: '30%'
+                                                            }}
+                                                        />
+                                                    </Form.Item>
+                                                    <Form.Item
+                                                        noStyle
+                                                        name="open_second"
+                                                        rules={[{ required: true }]}
+                                                        style={{ display: 'inline-block', width: 'calc(50% - 2px)' }}
+                                                    >
+                                                        <InputNumber min={0} max={60}
+                                                            placeholder="Giây"
+                                                            style={{
+                                                                height: '34px', fontSize: '16px', fontWeight: '400', width: '25%',
+                                                                borderRadius: '5px', marginBottom: '20px'
+                                                            }}
+                                                        />
+                                                    </Form.Item>
+                                                </Input.Group>
+
+                                            </Form.Item> */}
+                                            <Form.Item
+                                                {...layout4}
+                                                name="openDuetime"
+                                                label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Thời gian</span>}
+                                                rules={[{ required: true, message: 'Thông tin bắt buộc' }]}
+                                            >
+                                                <TimePicker
+                                                    size="large"
+                                                    style={{ height: '36px', borderRadius: '6px' }}
+                                                    defaultOpenValue={moment('00:00:00', 'HH:mm:ss')}
+                                                />
+                                            </Form.Item>
+
+                                            <Form.Item
+                                                {...layout4}
+                                                name="openDueDate"
+                                                label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Ngày</span>}
+                                                rules={[{ required: true, message: 'Thông tin bắt buộc' }]}
+                                            >
+                                                <DatePicker
+                                                    format="YYYY/MM/DD"
+                                                    size="large"
+                                                    style={{ height: '36px', borderRadius: '6px' }}
+                                                    placeholder=""
+                                                />
+                                            </Form.Item>
                                         </Card>
                                     </Col>
                                 </Row>
@@ -552,8 +711,7 @@ function CreateTest() {
                                     <div>
                                         {
                                             fileList.length > 0 ?
-                                                // <img src={`${questions[current - 1].image}?${Date.now()}`} style={{ width: "100%" }} />
-                                                <p>Already uploaded</p>
+                                                <img src={previewImage} style={{ width: "100%" }} />
                                                 : null
                                         }
                                     </div>
@@ -565,13 +723,6 @@ function CreateTest() {
                                         fileList={fileList}
                                         onPreview={handlePreview}
                                         onChange={handleChange}
-                                    // onClick={() => {
-                                    //     if (current === questions.length) {
-                                    //         console.log("GGGGGGGGGGGGGGGGGGGGG")
-                                    //         addQuestion(null, "image")
-                                    //     }
-                                    // }
-                                    // }
                                     >
                                         {fileList.length >= 1 ?
                                             null
@@ -587,11 +738,30 @@ function CreateTest() {
                                 <img alt="example" style={{ width: '100%' }} src={previewImage} />
                             </Modal>
                         </div>
-                        {/* </Card> */}
+                        {
+                            imageAvailable === true ?
+                                <div
+                                    style={{ display: 'flex', justifyContent: 'center' }}
+                                >
+                                    <Button
+                                        className="change-button"
+                                        size='large'
+                                        style={{ borderRadius: '6px' }}
+                                        onClick={() => {
+                                            setImageAvailable(false);
+                                            setFileList([]);
+                                        }}
+                                    >
+                                        <EditOutlined /> Đổi hình
+                                </Button>
+                                </div>
+
+                                : null
+                        }
                     </Col>
                 </Row>
 
-                <div style={{ marginTop: '30px' }}>
+                <div style={{ marginTop: '0px' }}>
                     {/* <Text>Mô tả đề thi</Text> */}
                     <Card
                         className='description-card'

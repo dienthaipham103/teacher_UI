@@ -13,7 +13,7 @@ import ReactHtmlParser from 'react-html-parser';
 import Correct from "assets/images/correct.png";
 import Wrong from "assets/images/wrong.png";
 
-import { FileImageOutlined, LeftCircleOutlined, CaretRightOutlined, LoadingOutlined, PlusOutlined, EditOutlined, RightCircleOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
+import { FileImageOutlined, LeftCircleOutlined, CaretRightOutlined, LoadingOutlined, HistoryOutlined, EditOutlined, RightCircleOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
 
 import {
     getPracticeHistoryAPI,
@@ -41,8 +41,8 @@ function beforeUpload(file) {
 }
 
 const layout2 = {
-    labelCol: { span: 10 },
-    wrapperCol: { span: 14 }
+    labelCol: { span: 12 },
+    wrapperCol: { span: 12 }
 };
 
 function PreviewTest() {
@@ -68,6 +68,7 @@ function PreviewTest() {
 
 
     const [duration, setDuration] = useState(0);
+    const [flutation, setFlutation] = useState(0);
     const [status, setStatus] = useState("");
     const [total, setTotal] = useState(0);
     const [questions, setQuestions] = useState([{ _id: '2222', image: '', numberOfAnswer: 2, multipleAnswers: false }]);
@@ -76,6 +77,8 @@ function PreviewTest() {
     const [current, setCurrent] = useState(1);
     const [description, setDescription] = useState("");
     const [imageUrl, setImageUrl] = useState("");
+    const [registrationDueDate, setRegistrationDueDate] = useState("");
+    const [quizOpen, setQuizOpen] = useState("");
 
     const [loading, setLoading] = useState(false);
 
@@ -89,10 +92,13 @@ function PreviewTest() {
 
             if (res.code === 1) {
                 setDuration(res.data.duration);
+                setFlutation(res.data.quizOpenFluctuation);
                 setQuizName(res.data.name);
                 setGrade(res.data.grade);
                 setSubject(res.data.subject);
                 setType(res.data.type);
+                setRegistrationDueDate(res.data.registrationDueDate);
+                setQuizOpen(res.data.quizOpen);
 
                 setDescription(res.data.description);
                 setImageUrl(res.data.images.cover);
@@ -134,8 +140,6 @@ function PreviewTest() {
         getQuestions();
         console.log("KAKAKAKAKAKAKKAKAKAKAKAKKAKAKAKAKKAKAKak")
     }, []);
-
-
 
 
     const handleButtonClick = async (value) => {
@@ -208,31 +212,11 @@ function PreviewTest() {
     const buttonStatus = (x_, index, active) => {
         if (active === true) {
             return "active-question"
-            // if (x_.length == 0) {
-            //     return "wrong-active"
-            // }
-            // else {
-            //     return x_[0] === correctAnswers[index][0] ? "correct-active" : "wrong-active"
-            // }
         }
         else {
             return "non-active-question"
-            // if (x_.length == 0) {
-            //     return "wrong"
-            // }
-            // else {
-            //     return x_[0] === correctAnswers[index][0] ? "correct" : "wrong"
-            // }
+
         }
-        // }
-        // else {
-        //     if (active === true) {
-        //         return x_.length > 0 ? "finish-active" : "active"
-        //     }
-        //     else {
-        //         return x_.length > 0 ? "finish" : "remain"
-        //     }
-        // }
 
     }
 
@@ -287,347 +271,384 @@ function PreviewTest() {
 
     return (
         <PreviewTestWrapper>
-
-            <Row>
-                <Col span={12}>
-                    <Space style={{ marginTop: '30px' }}>
-                        <Button
-                            className={page == "info" ? "active-button" : "non-active-button"}
-                            size='large'
-                            style={{ borderRadius: '6px' }}
-                            onClick={() => { setPage("info") }}
-                        >
-                            Thông tin đề
-                        </Button>
-                        <Button
-                            className={page == "questions" ? "active-button" : "non-active-button"}
-                            size='large'
-                            style={{ borderRadius: '6px' }}
-                            onClick={() => { setPage("questions") }}
-                        >
-                            Câu hỏi
-                        </Button>
-                    </Space>
-                </Col>
-                <Col span={12}>
-                    <Space style={{ marginTop: '30px' }}>
-                        <Button
-                            className="edit-button"
-                            size='large'
-                            style={{ borderRadius: '6px' }}
-                            onClick={() => {
-                                if (page === "info") {
-                                    history.push(`/edit-test-info/${id}`)
-                                }
-                                else {
-                                    history.push(`/add-questions/${id}`)
-                                }
-                            }}
-                        >
-                            <EditOutlined /> Chỉnh sửa
-                        </Button>
-                        {/* <Link
-                            style={{ fontSize: '16px', fontWeight: '900' }}
-                            to={page === "info" ? '/edit-test-info/56677hghg':
-                            '/add-questions/56677hghg'
-                        }
-                        >
-                            <EditOutlined style={{ marginRight: '10px' }} />Chỉnh sửa
-                        </Link> */}
-                    </Space>
-                </Col>
-            </Row>
-
-
-
-            {
-                page == "info" ?
-                    <div>
-                        <Row
-                            style={{ marginTop: '30px' }}
-                        >
-                            <Col
-                                span={16}
-                            >
-                                <Form
-                                    form={form}
-                                    style={{
-                                        // marginLeft: "10px" 
-                                    }}
-                                    {...layout2}
-                                    name='nest-messages'
-                                // onFinish={onFinish}
-                                // onFinishFailed={values => {
-                                //     console.log("fail");
-                                // }}
-                                // validateMessages={validateMessages}
-                                >
-                                    <Card
-                                        className="info-card"
-                                        title='Thông tin đề'
-                                        bordered={false}
-                                        style={{ minWidth: '210px', minHeight: '300px' }}
-                                    >
-                                        <Row>
-                                            <Col span={16}>
-                                                <Form.Item
-                                                    name='fullname'
-                                                    label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Tên đề</span>}
-                                                    style={{ borderRadius: '7px' }}
-                                                >
-                                                    <p>{quizName}</p>
-                                                </Form.Item>
-
-                                            </Col>
-                                            <Col span={8}>
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col span={16}>
-                                                <Form.Item
-                                                    name='email'
-                                                    label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Môn</span>}
-                                                >
-                                                    <p>{subject}</p>
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={8}>
-                                                <Form.Item
-                                                    name='grade'
-                                                    label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Lớp</span>}
-                                                >
-                                                    <p>{grade}</p>
-                                                </Form.Item>
-                                            </Col>
-                                        </Row>
-
-                                        {type == "EXAM" ?
-                                            <Row>
-                                                <Col span={16}>
-                                                    <Form.Item
-                                                        name="registerDuetime"
-                                                        label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Hết hạn đăng ký lúc</span>}
-                                                    >
-                                                        <p>{getTimeShow(new Date("2020-12-15T13:34:19.458Z"))}</p>
-                                                    </Form.Item>
-
-                                                </Col>
-                                                <Col span={8}>
-                                                    {/* <Form.Item
-                                                        name="registerDuedate"
-                                                        label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Ngày</span>}
-                                                    >
-                                                        <p>15/12/2020</p>
-                                                    </Form.Item> */}
-
-                                                </Col>
-                                            </Row>
-                                            : null
-                                        }
-
-                                        {type == "EXAM" ?
-                                            <Row>
-                                                <Col span={16}>
-                                                    <Form.Item
-                                                        name="openDuetime"
-                                                        label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Đề thi mở lúc</span>}
-                                                    >
-                                                        {/* <p>2 giờ</p> */}
-                                                        <p>{getTimeShow(new Date("2020-12-15T13:51:19.458Z"))}</p>
-                                                    </Form.Item>
-
-                                                </Col>
-                                                <Col span={8}>
-                                                    {/* <Form.Item
-                                                        name="openDueDate"
-                                                        label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Ngày</span>}
-                                                    >
-                                                        <p>16/12/2020</p>
-                                                    </Form.Item> */}
-
-                                                </Col>
-                                            </Row>
-                                            : null
-                                        }
-
-
-                                        {type == "EXAM" ?
-                                            <Row>
-                                                <Col span={16}>
-                                                    <Form.Item
-                                                        name='flutation'
-                                                        label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Được phép trễ</span>}
-                                                        style={{ borderRadius: '7px' }}
-                                                    >
-                                                        <p>10 phút</p>
-                                                    </Form.Item>
-
-                                                </Col>
-                                                <Col span={8}>
-                                                </Col>
-                                            </Row>
-                                            : null
-                                        }
-
-
-                                        <Row>
-                                            <Col span={16}>
-                                                <Form.Item
-                                                    name='duration'
-                                                    label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Thời gian làm bài</span>}
-                                                    style={{ borderRadius: '7px' }}
-                                                >
-                                                    {duration} phút
-                                                </Form.Item>
-
-                                            </Col>
-                                            <Col span={8}>
-                                            </Col>
-                                        </Row>
-
-
-
-                                    </Card>
-                                </Form>
-
-                            </Col>
-                            <Col span={8}>
-                                <Title
-                                    level={4}
-                                    style={{ color: '#113476', display: 'flex', justifyContent: 'center' }}
-                                >
-                                    <FileImageOutlined style={{ paddingRight: '10px', paddingTop: '2px' }} /> Ảnh đại diện
-                                </Title>
-                                <div
-                                // style={{
-                                //     position: 'absolute', left: '50%', top: '50%',
-                                //     transform: 'translate(-50%, -50%)'
-                                // }}
-                                >
-                                    <img src={imageUrl} alt="avatar" 
-                                        style={{ width: '100%', paddingLeft: '10px' }} 
-                                    />
-                                </div>
-                            </Col>
-                        </Row>
-
-                        <div style={{ marginTop: '30px', marginBottom: '30px' }}>
-                            <Card
-                                className='description-card'
-                                title='Mô tả đề'
-                            >
-                                {/* <TextArea rows={4} /> */}
-                                <div> {ReactHtmlParser(description)} </div>
-                            </Card>
-                        </div>
-
-                    </div>
-                    : null
-            }
-
-            {
-                page == "questions"
-                    ?
-                    <div style={{ marginTop: '20px' }}>
+            <Spin spinning={loading} tip="Đang tải...">
+                {
+                    loading === false ?
                         <div>
-                            <Row align='middle'>
-                                <Col span={3}>
-                                    <p style={{ fontSize: '18px', fontWeight: '900', margin: '0px' }}><CaretRightOutlined />Câu {current}/{total}</p>
+                            <Row>
+                                <Col span={12}>
+                                    <Space style={{ marginTop: '30px' }}>
+                                        <Button
+                                            className={page == "info" ? "active-button" : "non-active-button"}
+                                            size='large'
+                                            style={{ borderRadius: '6px' }}
+                                            onClick={() => { setPage("info") }}
+                                        >
+                                            Thông tin đề
+                                        </Button>
+                                        <Button
+                                            className={page == "questions" ? "active-button" : "non-active-button"}
+                                            size='large'
+                                            style={{ borderRadius: '6px' }}
+                                            onClick={() => { setPage("questions") }}
+                                        >
+                                            Câu hỏi
+                                        </Button>
+                                    </Space>
                                 </Col>
                                 <Col span={12}>
-                                 
-                                </Col>
-                                <Col span={4}>
-                                    {/* <p style={{ fontSize: '18px', margin: '0px' }}>Đáp án: {options[correctAnswers[current - 1][0]]}</p> */}
-                                    <p style={{ fontSize: '18px', margin: '0px' }}>Điểm: {questions[current-1].passScore}</p>
-                                </Col>
-
-
-
-                            </Row>
-
-                            <Row align='middle' style={{ marginBottom: '50px' }}>
-                                <Col span={1}>
-                                    <LeftCircleOutlined
-                                        className="move-icon"
-                                        onClick={backQuestion}
-                                    />
-                                </Col>
-                                <Col span={22}>
-                                    <Card
-                                        style={{ marginTop: '20px' }}
-                                        className="question-card"
-                                    >
-                                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                            <img
-                                                src={questions[current - 1].image}
-                                                style={{
-
-                                                }}
-                                            />
-                                        </div>
-                                        {oneAnswerRender(questions[current - 1].numberOfAnswer, questions[current - 1].multipleAnswers, null)}
-
-                                    </Card>
-                                </Col>
-                                <Col span={1}>
-                                    <RightCircleOutlined
-                                        className="move-icon"
-                                        onClick={nextQuestion}
-                                    />
+                                    <Space style={{ marginTop: '30px' }}>
+                                        <Button
+                                            className="edit-button"
+                                            size='large'
+                                            style={{ borderRadius: '6px' }}
+                                            onClick={() => {
+                                                if (page === "info") {
+                                                    history.push(`/edit-test-info/${id}`)
+                                                }
+                                                else {
+                                                    history.push(`/add-questions/${id}`)
+                                                }
+                                            }}
+                                        >
+                                            <EditOutlined /> Chỉnh sửa
+                                        </Button>
+                                    </Space>
                                 </Col>
                             </Row>
 
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    justifyContent: 'center'
-                                }}
-                            >
-                                <Affix
-                                    style={{
-                                        position: 'fixed',
-                                        bottom: 0,
-                                        paddingLeft: '30px',
-                                        paddingRight: '30px'
-                                    }}
-                                >
-                                    <div
-                                        style={{
-                                            display: 'flex',
-                                            justifyContent: 'center'
-                                        }}
-                                    >
-                                        <div className="item">
-                                            <Button
-                                                id="move-button"
-                                                onClick={backQuestion}
+
+
+                            {
+                                page == "info" ?
+                                    <div>
+                                        <Row
+                                            style={{ marginTop: '30px' }}
+                                        >
+                                            <Col
+                                                span={16}
                                             >
-                                                <LeftOutlined />Quay lại
-                                                        </Button>
+                                                <Form
+                                                    form={form}
+                                                    style={{
+                                                        // marginLeft: "10px" 
+                                                    }}
+                                                    {...layout2}
+                                                    name='nest-messages'
+                                                // onFinish={onFinish}
+                                                // onFinishFailed={values => {
+                                                //     console.log("fail");
+                                                // }}
+                                                // validateMessages={validateMessages}
+                                                >
+                                                    <Card
+                                                        className="info-card"
+                                                        title='Thông tin đề'
+                                                        bordered={false}
+                                                        style={{ minWidth: '210px', minHeight: '300px' }}
+                                                    >
+                                                        <Row>
+                                                            <Col span={12}>
+                                                                <Form.Item
+                                                                    name='fullname'
+                                                                    label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Tên đề</span>}
+                                                                    style={{ borderRadius: '7px' }}
+                                                                >
+                                                                    <p>{quizName}</p>
+                                                                </Form.Item>
+
+                                                            </Col>
+                                                            <Col span={12}>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row>
+                                                            <Col span={12}>
+                                                                <Form.Item
+                                                                    name='type'
+                                                                    label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Loại đề</span>}
+                                                                    style={{ borderRadius: '7px' }}
+                                                                >
+                                                                    <p>{type === "PRACTICE" ? "Luyện tập" : "Thi"}</p>
+                                                                </Form.Item>
+
+                                                            </Col>
+                                                            <Col span={12}>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row>
+                                                            <Col span={12}>
+                                                                <Form.Item
+                                                                    name='subject'
+                                                                    label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Môn</span>}
+                                                                >
+                                                                    <p>{subject}</p>
+                                                                </Form.Item>
+                                                            </Col>
+                                                            <Col span={12}>
+                                                                <Form.Item
+                                                                    name='duration'
+                                                                    label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Thời gian làm bài</span>}
+                                                                    style={{ borderRadius: '7px' }}
+                                                                >
+                                                                    {duration} phút
+                                                                </Form.Item>
+                                                            </Col>
+                                                        </Row>
+
+                                                        {/* {type == "EXAM" ?
+                                                            <Row>
+                                                                <Col span={12}>
+                                                                    <Form.Item
+                                                                        name="registerDuetime"
+                                                                        label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Hết hạn đăng ký lúc</span>}
+                                                                    >
+                                                                        <p>{getTimeShow(new Date("2020-12-15T13:34:19.458Z"))}</p>
+                                                                    </Form.Item>
+
+                                                                </Col>
+                                                                <Col span={12}>
+                                                                </Col>
+                                                            </Row>
+                                                            : null
+                                                        } */}
+
+                                                        {/* {type == "EXAM" ?
+                                                            <Row>
+                                                                <Col span={12}>
+                                                                    <Form.Item
+                                                                        name="openDuetime"
+                                                                        label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Đề thi mở lúc</span>}
+                                                                    >
+                                                                        <p>{getTimeShow(new Date("2020-12-15T13:51:19.458Z"))}</p>
+                                                                    </Form.Item>
+
+                                                                </Col>
+                                                                <Col span={12}>
+
+                                                                </Col>
+                                                            </Row>
+                                                            : null
+                                                        } */}
+
+
+
+
+
+                                                        <Row>
+                                                            <Col span={12}>
+                                                                <Form.Item
+                                                                    name='grade'
+                                                                    label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Lớp</span>}
+                                                                >
+                                                                    <p>{grade}</p>
+                                                                </Form.Item>
+
+                                                            </Col>
+                                                            <Col span={12}>
+                                                                {type == "EXAM" ?
+                                                                    <Form.Item
+                                                                        name='flutation'
+                                                                        label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Được phép trễ</span>}
+                                                                        style={{ borderRadius: '7px' }}
+                                                                    >
+                                                                        <p>{flutation} phút</p>
+                                                                    </Form.Item>
+
+                                                                    : null
+                                                                }
+                                                            </Col>
+                                                        </Row>
+
+
+
+                                                    </Card>
+
+
+                                                    {
+                                                        type == "EXAM" ?
+                                                            <Row gutter={[16, 0]}>
+                                                                <Col span={12}>
+                                                                    <Card
+                                                                        className="time-card"
+                                                                        title={<span style={{ color: '#411EAF', fontSize: '18px', fontWeight: '900' }}><HistoryOutlined style={{ marginRight: '10px' }} />
+                                                                            Hạn đăng ký
+                                                                                </span>}
+                                                                        bordered={false}
+                                                                        style={{ minWidth: '210px', width: '100%', marginTop: '30px' }}
+                                                                    >
+                                                                        <p>{getTimeShow(new Date(registrationDueDate))}</p>
+
+                                                                    </Card>
+                                                                </Col>
+                                                                <Col span={12}>
+                                                                    <Card
+                                                                        className="time-card"
+                                                                        title={<span style={{ color: 'green', fontSize: '18px', fontWeight: '900' }}><HistoryOutlined style={{ marginRight: '10px' }} />
+                                                                                Thời gian mở đề
+                                                                                </span>}
+                                                                        bordered={false}
+                                                                        style={{ minWidth: '210px', width: '100%', marginTop: '30px' }}
+                                                                    >
+                                                                        <p>{getTimeShow(new Date(quizOpen))}</p>
+                                                                    </Card>
+                                                                </Col>
+                                                            </Row>
+
+                                                            : null
+                                                    }
+                                                </Form>
+
+                                            </Col>
+                                            <Col span={8}>
+                                                <Title
+                                                    level={4}
+                                                    style={{ color: '#113476', display: 'flex', justifyContent: 'center' }}
+                                                >
+                                                    <FileImageOutlined style={{ paddingRight: '10px', paddingTop: '2px' }} /> Ảnh đại diện
+                                                </Title>
+                                                <div
+                                                // style={{
+                                                //     position: 'absolute', left: '50%', top: '50%',
+                                                //     transform: 'translate(-50%, -50%)'
+                                                // }}
+                                                >
+                                                    <img src={`${imageUrl}?${Date.now()}`} alt="avatar"
+                                                        style={{ width: '100%', paddingLeft: '10px' }}
+                                                    />
+                                                </div>
+                                            </Col>
+                                        </Row>
+
+                                        <div style={{ marginTop: '30px', marginBottom: '30px' }}>
+                                            <Card
+                                                className='description-card'
+                                                title='Mô tả đề'
+                                            >
+                                                {/* <TextArea rows={4} /> */}
+                                                <div> {ReactHtmlParser(description)} </div>
+                                            </Card>
                                         </div>
-                                        <div className="item">
-                                            <div style={{ display: 'flex', margin: '0px', flexWrap: 'wrap', justifyContent: 'center' }}>
-                                                {buttonRender}
+
+                                    </div>
+                                    : null
+                            }
+
+                            {
+                                page == "questions"
+                                    ?
+                                    <div style={{ marginTop: '20px' }}>
+                                        <div>
+                                            <Row align='middle'>
+                                                <Col span={3}>
+                                                    <p style={{ fontSize: '18px', fontWeight: '900', margin: '0px' }}><CaretRightOutlined />Câu {current}/{total}</p>
+                                                </Col>
+                                                <Col span={12}>
+
+                                                </Col>
+                                                <Col span={4}>
+                                                    {/* <p style={{ fontSize: '18px', margin: '0px' }}>Đáp án: {options[correctAnswers[current - 1][0]]}</p> */}
+                                                    <p style={{ fontSize: '18px', margin: '0px' }}>Điểm: {questions[current - 1].passScore}</p>
+                                                </Col>
+
+
+
+                                            </Row>
+
+                                            <Row align='middle' style={{ marginBottom: '50px' }}>
+                                                <Col span={1}>
+                                                    <LeftCircleOutlined
+                                                        className="move-icon"
+                                                        onClick={backQuestion}
+                                                    />
+                                                </Col>
+                                                <Col span={22}>
+                                                    <Card
+                                                        style={{ marginTop: '20px' }}
+                                                        className="question-card"
+                                                    >
+                                                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                                            <img
+                                                                src={questions[current - 1].image}
+                                                                style={{
+
+                                                                }}
+                                                            />
+                                                        </div>
+                                                        {oneAnswerRender(questions[current - 1].numberOfAnswer, questions[current - 1].multipleAnswers, null)}
+
+                                                    </Card>
+                                                </Col>
+                                                <Col span={1}>
+                                                    <RightCircleOutlined
+                                                        className="move-icon"
+                                                        onClick={nextQuestion}
+                                                    />
+                                                </Col>
+                                            </Row>
+
+                                            <div
+                                                style={{
+                                                    display: 'flex',
+                                                    justifyContent: 'center'
+                                                }}
+                                            >
+                                                <Affix
+                                                    style={{
+                                                        position: 'fixed',
+                                                        bottom: 0,
+                                                        paddingLeft: '30px',
+                                                        paddingRight: '30px'
+                                                    }}
+                                                >
+                                                    <div
+                                                        style={{
+                                                            display: 'flex',
+                                                            justifyContent: 'center'
+                                                        }}
+                                                    >
+                                                        <div className="item">
+                                                            <Button
+                                                                id="move-button"
+                                                                onClick={backQuestion}
+                                                            >
+                                                                <LeftOutlined />Quay lại
+                                                        </Button>
+                                                        </div>
+                                                        <div className="item">
+                                                            <div style={{ display: 'flex', margin: '0px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                                                                {buttonRender}
+                                                            </div>
+                                                        </div>
+                                                        <div className="item">
+                                                            <Button
+                                                                id="move-button"
+                                                                onClick={nextQuestion}
+                                                            >
+                                                                Tiếp theo<RightOutlined />
+                                                            </Button>
+                                                        </div>
+                                                    </div>
+                                                </Affix>
                                             </div>
                                         </div>
-                                        <div className="item">
-                                            <Button
-                                                id="move-button"
-                                                onClick={nextQuestion}
-                                            >
-                                                Tiếp theo<RightOutlined />
-                                            </Button>
-                                        </div>
                                     </div>
-                                </Affix>
-                            </div>
+                                    : null
+                            }
                         </div>
-                    </div>
-                    : null
-            }
+                        :
+                        <div>
+                            <p>.</p>
+                            <p>.</p>
+                            <p>.</p>
+                            <p>.</p>
+                            <p>.</p>
+                            <p>.</p>
+                            <p>.</p>
+                            <p>.</p>
+                        </div>
+                }
 
-
+            </Spin>
         </PreviewTestWrapper>
     );
 }

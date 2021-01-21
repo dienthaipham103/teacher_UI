@@ -4,6 +4,12 @@ import Background from 'assets/images/71.jpg';
 
 export const PreviewTestWrapper = styled.div`
 
+    .time-card{
+        .ant-card-body{
+            padding-top: 0px;
+        }
+    }
+
 
     /* .ant-card {
         margin: 0;

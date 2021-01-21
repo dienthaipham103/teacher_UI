@@ -4,6 +4,21 @@ import Background from 'assets/images/71.jpg';
 
 export const CreateTestWrapper = styled.div`
 
+    .change-button{
+        background: #F6F8F8;
+        font-size: 16px;
+        font-weight: 900;
+        border-color: #F6F8F8;
+        color: #3F5681;
+        -webkit-box-shadow: 0px 0px 0 rgba(0, 0, 0, 0.045);
+          box-shadow: 0px 0px 0 rgba(0, 0, 0, 0.045);
+        &:hover {
+            background-color: #F2F4F7 !important;
+            border-color: #F2F4F7 !important;
+            color: green;
+        }
+    }
+
     /* .avatar-uploader > .ant-upload {
         width: 220px;
         height: 256px;

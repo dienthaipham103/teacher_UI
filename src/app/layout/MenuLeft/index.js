@@ -78,9 +78,7 @@ export default withRouter(function MenuLeft({ location }) {
           // theme='dark'
           style={{ height: '100%' }}
         >
-          {/* <Menu.Item key='/child-quiz' icon={<CopyOutlined />}>
-            <NavLink to={'/child-quiz'}>Các bài thi</NavLink>
-          </Menu.Item> */}
+        
           <Menu.Item key='/home' icon={<HomeOutlined style={{ fontSize: '16px'}}/>}>
             <NavLink 
               to={'/home'}
@@ -105,22 +103,22 @@ export default withRouter(function MenuLeft({ location }) {
             </NavLink>
           </Menu.Item>
 
-          <Menu.Item key='/student-list' icon={<SolutionOutlined style={{ fontSize: '16px'}}/>}>
+          {/* <Menu.Item key='/student-list' icon={<SolutionOutlined style={{ fontSize: '16px'}}/>}>
             <NavLink 
               to={'/student-list'}
               onClick={()=>{dispatch(changeStudentPracticeStatus('1'));}}
             >
               Danh sách học sinh
             </NavLink>
-          </Menu.Item>
+          </Menu.Item> */}
 
-          <Menu.Item key='/add-student' icon={<UserAddOutlined style={{ fontSize: '16px'}}/>}>
+          {/* <Menu.Item key='/add-student' icon={<UserAddOutlined style={{ fontSize: '16px'}}/>}>
             <NavLink 
               to={'/add-student'}
             >
               Thêm học sinh
             </NavLink>
-          </Menu.Item>
+          </Menu.Item> */}
 
           <Menu.Item key='/contact' icon={<ContactsOutlined style={{ fontSize: '16px'}}/>}>
             <NavLink to={'/contact'}>Liên hệ</NavLink>
@@ -134,9 +132,7 @@ export default withRouter(function MenuLeft({ location }) {
             <NavLink to={'/test-list'}>Đề đang làm</NavLink>
           </Menu.Item>
 
-          {/* <SubMenu key='sub2' icon={<SolutionOutlined />} title='Danh sách'>
-            {renderStudentList}
-          </SubMenu> */}
+         
         
         </Menu>
       </Sider>

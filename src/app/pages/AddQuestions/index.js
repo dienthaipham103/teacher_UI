@@ -850,7 +850,7 @@ function AddQuestions() {
 
     return (
         <AddQuestionsWrapper>
-            <Spin spinning={loading}>
+            <Spin spinning={loading} tip="Đang tải...">
                 {
                     loading === false ?
                         <div>
@@ -865,7 +865,7 @@ function AddQuestions() {
                                     }
                                 >
                                     <CheckOutlined /> Xong
-                    </Button>
+                                </Button>
                             </div>
 
                             <div>
@@ -1134,7 +1134,15 @@ function AddQuestions() {
                                 </div>
                             </div>
                         </div>
-                        : null
+                        :
+                        <div>
+                            <p>.</p>
+                            <p>.</p>
+                            <p>.</p>
+                            <p>.</p>
+                            <p>.</p>
+                            <p>.</p>
+                        </div>
                 }
 
             </Spin>
