@@ -144,13 +144,10 @@ function Practice() {
 
                           }}
                           onClick={() => {
-                            setSelectedStudentId(practice._id);
-                            setClick(true);
-                            setQuizButtonClick(true);
-                            setVisible(true);
+                            history.push(`/preview-test/not-allow-edit/${practice._id}`);
                           }}
                         >
-                          Làm bài
+                          Xem đề
                         </Button>
                         <Modal
                           centered

@@ -74,7 +74,7 @@ export const QuizWrapper = styled.div`
         cursor: pointer;
     }
 
-    .register-button{
+    .preview-button{
         border-radius: 5px;
         font-size: 16px;
         font-weight: 600;
@@ -85,7 +85,7 @@ export const QuizWrapper = styled.div`
         }
     }
 
-    .not-register-button{
+    .not-preview-button{
         border-radius: 5px;
         font-size: 16px;
         font-weight: 600;

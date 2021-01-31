@@ -3,6 +3,37 @@ import Background from 'assets/images/background.png';
 
 export const LoginWrapper = styled.div`
 
+.active-button{
+        background: #2596be;
+        font-size: 16px;
+        font-weight: 900;
+        border-color: #2596be;
+        color: white;
+        -webkit-box-shadow: 0px 0px 0 rgba(0, 0, 0, 0.045);
+          box-shadow: 0px 0px 0 rgba(0, 0, 0, 0.045);
+        &:hover {
+            background-color: #1F6C89 !important;
+            border-color: #1F6C89 !important;
+            color: white;
+        }
+    }
+
+    .non-active-button{
+        /* background: gray; */
+        background: #F6F8F8;
+        font-size: 16px;
+        font-weight: 900;
+        border-color: gray;
+        color: gray;
+        -webkit-box-shadow: 0px 0px 0 rgba(0, 0, 0, 0.045);
+          box-shadow: 0px 0px 0 rgba(0, 0, 0, 0.045);
+        &:hover {
+            background-color: #1F6C89 !important;
+            border-color: #1F6C89 !important;
+            color: white;
+        }
+    }
+
     .ant-card-head {
         min-height: 48px;
         /* margin-bottom: -1px; */

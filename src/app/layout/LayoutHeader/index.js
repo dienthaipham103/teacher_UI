@@ -45,7 +45,8 @@ const pageNames = {
   '/add-questions': 'Thêm & chỉnh sửa câu hỏi',
   '/edit-test-info': 'Chỉnh sửa thông tin đề',
   '/test-list': 'Đề đang làm',
-  '/preview-test': 'Xem trước đề'
+  '/preview-test': 'Xem trước đề',
+  '/preview-test/not-allow-edit': 'Xem đề',
 }
 
 const getPageContent = (path) => {
@@ -75,8 +76,11 @@ const getPageContent = (path) => {
   else if (path.includes('/edit-test-info/')) {
     return '/edit-test-info'
   }
-  else if (path.includes('/preview-test/')) {
+  else if (path.includes('/preview-test/') && !path.includes('not-allow-edit')) {
     return '/preview-test'
+  }
+  else if (path.includes('/preview-test/not-allow-edit')) {
+    return '/preview-test/not-allow-edit'
   }
   else if (path.includes('/student-practice') || path.includes('/practice-history')) {
     console.log('HHHHHHHHHHHHHHHHHHHHHHHHHHH')

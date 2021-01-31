@@ -91,7 +91,7 @@ export default withRouter(function MenuLeft({ location }) {
             <NavLink 
               to={'/quiz'}
             >
-              Đăng ký thi
+              Đề thi
             </NavLink>
           </Menu.Item>
 
@@ -99,7 +99,7 @@ export default withRouter(function MenuLeft({ location }) {
             <NavLink 
               to={'/practice'}
             >
-              Luyện tập
+              Đề luyện tập
             </NavLink>
           </Menu.Item>
 

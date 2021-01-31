@@ -12,6 +12,7 @@ import { FolderOutlined, FileTextOutlined, UserOutlined, FieldTimeOutlined } fro
 
 import { onVisible, offVisible } from 'app/store/modal';
 import AssignChildToTest from 'app/components/ModalManager/AssignChildToTest';
+import { useHistory } from "react-router-dom";
 
 import {
   selectAllQuiz,
@@ -26,6 +27,8 @@ function Quiz() {
   const { Title } = Typography;
   const { TabPane } = Tabs;
   const { Option } = Select;
+
+  const history = useHistory();
 
   const [expiredQuizzes, setExpiredQuizzes] = useState([]);
   const [expiredQuizzesLoading, setExpiredQuizzesLoading] = useState(true);
@@ -129,7 +132,7 @@ function Quiz() {
                           </Col>
                           <Col span={10}>
                             <Button
-                              className="register-button"
+                              className="not-preview-button"
                               size="large"
                               onMouseEnter={() => {
                                 setQuizButtonClick(true);
@@ -137,9 +140,9 @@ function Quiz() {
                               onMouseLeave={() => {
                                 setQuizButtonClick(false);
                               }}
-                              onClick={() => handleChooseChild(quiz._id)}
+                              // onClick={() => handleChooseChild(quiz._id)}
                             >
-                              Đăng ký
+                              Xem đề
                           </Button>
                           </Col>
                         </Row>
@@ -199,7 +202,7 @@ function Quiz() {
                             </Col>
                             <Col span={10}>
                               <Button
-                                className="not-register-button"
+                                className="preview-button"
                                 size="large"
                                 onMouseEnter={() => {
                                   setQuizButtonClick(true);
@@ -207,9 +210,9 @@ function Quiz() {
                                 onMouseLeave={() => {
                                   setQuizButtonClick(false);
                                 }}
-                              // onClick={() => handleChooseChild(quiz._id)}
+                                onClick={() => history.push(`/preview-test/not-allow-edit/${quiz._id}`)}
                               >
-                                Đăng ký
+                                Xem đề
                           </Button>
                             </Col>
                           </Row>

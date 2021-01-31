@@ -59,7 +59,7 @@ function PreviewTest() {
 
     const [form] = Form.useForm();
 
-    const { id } = useParams();
+    const { edit, id } = useParams();
 
     // -------------------------show questions----------------------------
     const [quizName, setQuizName] = useState("");
@@ -297,23 +297,27 @@ function PreviewTest() {
                                     </Space>
                                 </Col>
                                 <Col span={12}>
-                                    <Space style={{ marginTop: '30px' }}>
-                                        <Button
-                                            className="edit-button"
-                                            size='large'
-                                            style={{ borderRadius: '6px' }}
-                                            onClick={() => {
-                                                if (page === "info") {
-                                                    history.push(`/edit-test-info/${id}`)
-                                                }
-                                                else {
-                                                    history.push(`/add-questions/${id}`)
-                                                }
-                                            }}
-                                        >
-                                            <EditOutlined /> Chỉnh sửa
+                                    {
+                                        edit === "allow-edit" ?
+                                            <Space style={{ marginTop: '30px' }}>
+                                                <Button
+                                                    className="edit-button"
+                                                    size='large'
+                                                    style={{ borderRadius: '6px' }}
+                                                    onClick={() => {
+                                                        if (page === "info") {
+                                                            history.push(`/edit-test-info/${id}`)
+                                                        }
+                                                        else {
+                                                            history.push(`/add-questions/${id}`)
+                                                        }
+                                                    }}
+                                                >
+                                                    <EditOutlined /> Chỉnh sửa
                                         </Button>
-                                    </Space>
+                                            </Space>
+                                            : null
+                                    }
                                 </Col>
                             </Row>
 

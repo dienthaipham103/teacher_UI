@@ -4,7 +4,7 @@ import { LoginWrapper } from './LoginStyle';
 import { GoogleOutlined, LockOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, loginGoogle, loginFacebook } from "app/store/auth";
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 import _isEmpty from 'lodash/isEmpty';
 import { useHistory } from 'react-router-dom';
 
@@ -74,23 +74,52 @@ function Login() {
     <LoginWrapper>
       <Spin tip="Đang tải..." spinning={loading}>
 
-        <Space>
-          <Button
-            onClick={()=>{
-              history.push('http://localhost:8000/')
-            }}
-          >
-            Học sinh
-          </Button>
-          <Button
-            onClick={()=>{
-              
-            }}
-          >
-            Giáo viên
-          </Button>
-        </Space>
+        <div
+          style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px', marginRight: '40px' }}
+        >
+          {/* <Space size="large">
+            <Route path='/privacy-policy' component={() => {
+              window.location.href = 'https://app.wiiquiz.com/';
+              return null;
+            }} />
+            <a href="https://app.wiiquiz.com/">Học sinh</a>
 
+            <Button
+              onClick={() => {
+
+              }}
+            >
+              Giáo viên
+          </Button>
+          </Space> */}
+          <Space size="middle">
+            <Button
+              className={"active-button"}
+              size='large'
+              style={{ borderRadius: '6px' }}
+            // onClick={() => { setType("EXAM") }}
+            >
+              Giáo viên
+            </Button>
+            {/* <Route path='/privacy-policy' component={() => {
+              window.location.href = 'https://app.wiiquiz.com/';
+              return null;
+            }} />
+            <a href="https://app.wiiquiz.com/">Học sinh</a> */}
+            <Button
+              className={"non-active-button"}
+              size='large'
+              style={{ borderRadius: '6px' }}
+            // onClick={() => { setType("PRACTICE") }}
+            >
+              <Route path='/privacy-policy' component={() => {
+                window.location.href = 'https://app.wiiquiz.com/';
+                return null;
+              }} />
+              <a href="https://app.wiiquiz.com/">Học sinh</a>
+            </Button>
+          </Space>
+        </div>
 
         <Title level={2}
           style={{ paddingTop: '15px', paddingBottom: '0px', color: '#1273EB', display: 'flex', justifyContent: 'center' }}
@@ -213,7 +242,7 @@ function Login() {
                         {/* <GoogleOutlined style={{ color: 'red', fontSize: '22px' }} /> */}
                         <img className="google-icon" src={Google} style={{ height: '30px', marginRight: '10px' }} />
                         {/* <GoogleOutlined style={{ color: 'red', fontSize: '22px' }} /> */}
-                        <span style={{paddingRight: '20px'}}>
+                        <span style={{ paddingRight: '20px' }}>
                           Đăng nhập bằng Google
                         </span>
                       </Button>

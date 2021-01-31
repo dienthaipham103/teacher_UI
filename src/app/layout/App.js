@@ -249,7 +249,7 @@ function App() {
                       <TestList />
                     </Content>
                   </PrivateRoute>
-                  <PrivateRoute path='/preview-test/:id' exact>
+                  <PrivateRoute path='/preview-test/:edit/:id' exact>
                     <Content
                       className='site-layout'
                       style={{

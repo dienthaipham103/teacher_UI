@@ -141,11 +141,11 @@ function PracticeInfo() {
                         size="large"
                         className="active-button"
                         onClick={() => {
-                            setVisible(true);
+                            history.push(`/preview-test/not-allow-edit/${quizId}`);
                             // history.push(`/student-quiz/do-test/${combinedId}`);
                         }}
                     >
-                        Chọn học sinh
+                        Xem đề
                     </Button>
                 )
             }

@@ -145,7 +145,7 @@ function TestList() {
                                                             setClick(true);
                                                             setQuizButtonClick(true);
                                                             // setVisible(true);
-                                                            history.push(`/preview-test/${test._id}`)
+                                                            history.push(`/preview-test/allow-edit/${test._id}`)
                                                         }}
                                                     >
                                                         Chi tiết

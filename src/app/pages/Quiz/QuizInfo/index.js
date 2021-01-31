@@ -142,14 +142,15 @@ function QuizInfo() {
             return (
                 <Button
                     size="large"
-                    className={(new Date(registrationDueDate)) - (new Date()) > 0 ? "active-button" : "not-active-button"}
+                    className={(new Date(registrationDueDate)) - (new Date()) > 0 ? "not-active-button" : "active-button"}
                     onClick={() => {
-                        if ((new Date(registrationDueDate)) - (new Date()) > 0) {
-                            handleChooseChild(quizId)
+                        if ((new Date(registrationDueDate)) - (new Date()) <= 0) {
+                            // handleChooseChild(quizId)
+                            history.push(`/preview-test/not-allow-edit/${quizId}`)
                         }
                     }}
                 >
-                    Đăng ký ngay
+                    Xem đề
                 </Button>
             )
         }
