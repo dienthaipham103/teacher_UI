@@ -209,7 +209,7 @@ function TestList() {
                                                             setClick(true);
                                                             setQuizButtonClick(true);
                                                             // setVisible(true);
-                                                            history.push(`/preview-test/${practice._id}`)
+                                                            history.push(`/preview-test/allow-edit/${practice._id}`)
                                                         }}
                                                     >
                                                         Chi tiết

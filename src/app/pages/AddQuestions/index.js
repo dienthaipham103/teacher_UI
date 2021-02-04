@@ -248,7 +248,7 @@ function AddQuestions() {
 
                 setQuestions([...res.data, {
                     imageAvailable: false,
-                    correctAnswers: [null],
+                    correctAnswers: [0],
                     image: "",
                     multipleAnswers: false,
                     numberOfAnswer: 0,
@@ -298,7 +298,8 @@ function AddQuestions() {
         // studentDoPractice();
         // return () => { };
         getResult();
-        console.log("KAKAKAKAKAKAKKAKAKAKAKAKKAKAKAKAKKAKAKak")
+        console.log("KAKAKAKAKAKAKKAKAKAKAKAKKAKAKAKAKKAKAKak");
+        console.log('QUESTIONS: ', questions);
     }, []);
 
 
@@ -432,11 +433,12 @@ function AddQuestions() {
             try {
                 const initialData = {
                     index: current - 1,
-                    numberOfAnswer: 5,
+                    // numberOfAnswer: 5,
                     multipleAnswers: false,
                     // api mistake
-                    correctAnswers: changeIs === "answer" ? [value] : [0],
+                    correctAnswers: changeIs === "answer" ? value : [0],
                     passScore: changeIs === "score" ? value : null,
+                    numberOfAnswer: changeIs === "answerNum" ? value : 0,
                     // imageAvailable: changeIs === "image" ? true : false,
                 }
                 let res = await createQuestionAPI({ id: id, data: initialData });
@@ -445,11 +447,12 @@ function AddQuestions() {
                     let temp_questions = [...questions];
 
                     temp_questions[current - 1] = {
-                        correctAnswers: changeIs === "answer" ? [value] : [null],
+                        correctAnswers: changeIs === "answer" ? value : [0],
                         passScore: changeIs === "score" ? value : null,
+                        numberOfAnswer: changeIs === "answerNum" ? value : 0,
                         image: "",
                         multipleAnswers: false,
-                        numberOfAnswer: 5,
+                        // numberOfAnswer: 5,
                         _id: res.data._id,
                         // imageAvailable: changeIs === "image" ? true : false,
                         image: res.data.image
@@ -457,7 +460,7 @@ function AddQuestions() {
                         // image
                     };
                     temp_questions.push({
-                        correctAnswers: [null],
+                        correctAnswers: [0],
                         image: "",
                         multipleAnswers: false,
                         numberOfAnswer: 0,
@@ -504,7 +507,7 @@ function AddQuestions() {
                 index: current - 1,
                 numberOfAnswer: 5,
                 multipleAnswers: false,
-                correctAnswers: [null]
+                correctAnswers: [0]
             }
             let res = await createQuestionAPI({ id: id, data: initialData });
             console.log('createQuestionAPI', res)
@@ -515,7 +518,7 @@ function AddQuestions() {
                 // insert to questions
                 let temp_questions = [...questions];
                 temp_questions.splice(current - 1, 0, {
-                    correctAnswers: [null],
+                    correctAnswers: [0],
                     image: "",
                     multipleAnswers: false,
                     numberOfAnswer: 0,
@@ -553,7 +556,7 @@ function AddQuestions() {
                 index: current,
                 numberOfAnswer: 5,
                 multipleAnswers: false,
-                correctAnswers: [null]
+                correctAnswers: [0]
             }
             let res = await createQuestionAPI({ id: id, data: initialData });
             console.log('createQuestionAPI', res)
@@ -562,7 +565,7 @@ function AddQuestions() {
                 // insert to questions
                 let temp_questions = [...questions];
                 temp_questions.splice(current, 0, {
-                    correctAnswers: [null],
+                    correctAnswers: [0],
                     image: "",
                     multipleAnswers: false,
                     numberOfAnswer: 0,
@@ -626,6 +629,9 @@ function AddQuestions() {
     // new //
 
     const onChangeAnswer = async (value) => {
+        // const correctAnswers = value;
+        console.log("VALUES: ", value);
+        console.log("NUM OF ANSWER: ", questions[current - 1].numberOfAnswer);
         if (current === questions.length) {
             addQuestion(value, "answer");
         }
@@ -634,14 +640,14 @@ function AddQuestions() {
             setQuestions(
                 questions.map((item, index) =>
                     item._id === current_id && index === current - 1
-                        ? { ...item, correctAnswers: [value] }
+                        ? { ...item, correctAnswers: value}
                         : item
                 ))
 
             // call api
             try {
                 const data = {
-                    correctAnswers: [value]
+                    correctAnswers: value
                 }
                 let res = await updateQuestionAPI({ id: id, questionId: current_id, data: data });
                 console.log('createQuestionAPI', res)
@@ -656,23 +662,34 @@ function AddQuestions() {
         console.log("ONCHANGE: ", value)
     }
 
+    // const options = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+
+    const optionsRender = options.slice(0, questions[current - 1].numberOfAnswer).map((x, index) => (
+        <Option value={index}>
+            {x}
+        </Option>
+    ));
+
     const answersRenderDelete = Array(100).fill({}).map((item, index_) => (
         <div>
             {
                 deleting === index_ + 1 ?
-                    <Select style={{ width: 150, fontSize: '16px', fontWeight: '900' }}
-                        placeholder="Nhập đáp án"
+                    <Select
+                        style={{ width: '160px', fontSize: '16px', fontWeight: '900', borderRadius: '5px' }}
+                        mode="multiple"
+                        // placeholder="Nhập đáp án"
                         size="default"
                         // defaultValue={questions[current - 1].correctAnswers[0]}
                         defaultValue={current === questions.length ? null : questions[current - 1].correctAnswers[0]}
                         onChange={onChangeAnswer}
                     >
-                        <Option value={0}>A</Option>
+                        {/* <Option value={0}>A</Option>
                         <Option value={1}>B</Option>
                         <Option value={2}>C</Option>
                         <Option value={3}>D</Option>
                         <Option value={4}>E</Option>
-                        <Option value={5}>F</Option>
+                        <Option value={5}>F</Option> */}
+                        {optionsRender}
                     </Select>
                     : null
             }
@@ -683,19 +700,23 @@ function AddQuestions() {
         <div>
             {
                 index === current - 1 && adding === false && deleting === 0 ?
-                    <Select style={{ width: 150, fontSize: '16px', fontWeight: '900' }}
-                        placeholder="Nhập đáp án"
+                    <Select
+                        style={{ width: '160px', fontSize: '16px', fontWeight: '900', borderRadius: '5px' }}
+                        mode="multiple"
+                        // placeholder="Nhập đáp án"
                         size="default"
                         // defaultValue={questions[current - 1].correctAnswers[0]}
-                        defaultValue={question.correctAnswers[0]}
+                        // defaultValue={question.correctAnswers[0]}
+                        defaultValue={question.numberOfAnswer > 1 ? question.correctAnswers : question.correctAnswers[0]}
                         onChange={onChangeAnswer}
                     >
-                        <Option value={0}>A</Option>
+                        {/* <Option value={0}>A</Option>
                         <Option value={1}>B</Option>
                         <Option value={2}>C</Option>
                         <Option value={3}>D</Option>
                         <Option value={4}>E</Option>
-                        <Option value={5}>F</Option>
+                        <Option value={5}>F</Option> */}
+                        {optionsRender}
                     </Select>
                     : null
             }
@@ -708,19 +729,23 @@ function AddQuestions() {
             }
             {
                 index === current - 1 && adding === true ?
-                    <Select style={{ width: 150, fontSize: '16px', fontWeight: '900' }}
-                        placeholder="Nhập đáp án"
+                    <Select
+                        style={{ width: '160px', fontSize: '16px', fontWeight: '900', borderRadius: '5px' }}
+                        // mode="multiple"
+                        mode="multiple"
+                        // placeholder="Nhập đáp án"
                         size="default"
                         // defaultValue={questions[current - 1].correctAnswers[0]}
                         // defaultValue={}
                         onChange={onChangeAnswer}
                     >
-                        <Option value={0}>A</Option>
+                        {/* <Option value={0}>A</Option>
                         <Option value={1}>B</Option>
                         <Option value={2}>C</Option>
                         <Option value={3}>D</Option>
                         <Option value={4}>E</Option>
-                        <Option value={5}>F</Option>
+                        <Option value={5}>F</Option> */}
+                        {optionsRender}
                     </Select>
                     : null
             }
@@ -729,7 +754,6 @@ function AddQuestions() {
     // new //
 
     const onChangeScore = async (value) => {
-        console.log('VALUE:   >>>>', value);
         if (current === questions.length) {
             addQuestion(value, "score");
         }
@@ -763,7 +787,7 @@ function AddQuestions() {
             {
                 deleting === index_ + 1 ?
                     <InputNumber min={1} max={20}
-                        style={{ height: '34px', fontSize: '16px', fontWeight: '400' }}
+                        style={{ height: '34px', width: '60px', fontSize: '16px', fontWeight: '400' }}
                         defaultValue={current === questions.length ? null : questions[current - 1].passScore}
                         onChange={onChangeScore}
                     />
@@ -776,12 +800,8 @@ function AddQuestions() {
         <div>
             {
                 index === current - 1 && adding === false && deleting === 0 ?
-                    // <Input style={{ height: '34px', fontSize: '16px', fontWeight: '400' }}
-                    //     defaultValue={question.passScore}
-                    //     onChange={onChangeScore}
-                    // />
                     <InputNumber min={1} max={20}
-                        style={{ height: '34px', fontSize: '16px', fontWeight: '400' }}
+                        style={{ height: '34px', width: '60px', fontSize: '16px', fontWeight: '400' }}
                         defaultValue={question.passScore}
                         onChange={onChangeScore}
                     />
@@ -796,14 +816,84 @@ function AddQuestions() {
             }
             {
                 index === current - 1 && adding === true ?
-                    // <Input style={{ height: '34px', fontSize: '16px', fontWeight: '400' }}
-                    //     // defaultValue={question.passScore}
-                    //     onChange={onChangeScore}
-                    // />
+
                     <InputNumber min={1} max={20}
-                        style={{ height: '34px', fontSize: '16px', fontWeight: '400' }}
+                        style={{ height: '34px', width: '60px', fontSize: '16px', fontWeight: '400' }}
                         // defaultValue={question.passScore}
                         onChange={onChangeScore}
+                    />
+                    : null
+            }
+        </div>
+    ));
+
+    const onChangeAnswerNum = async (value) => {
+        if (current === questions.length) {
+            addQuestion(value, "answerNum");
+        }
+        else {
+            const current_id = questions[current - 1]._id
+            setQuestions(
+                questions.map((item, index) =>
+                    item._id === current_id && index === current - 1
+                        ? { ...item, numberOfAnswer: value }
+                        : item
+                ))
+
+            try {
+                const data = {
+                    numberOfAnswer: value
+                }
+                let res = await updateQuestionAPI({ id: id, questionId: current_id, data: data });
+                console.log('createQuestionAPI', res)
+                if (res.code === 1) {
+                    console.log('...........Update successful')
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+    }
+
+    const answerNumRenderDelete = Array(100).fill({}).map((item, index_) => (
+        <div>
+            {
+                deleting === index_ + 1 ?
+                    <InputNumber min={1} max={10}
+                        style={{ height: '34px', width: '60px', fontSize: '16px', fontWeight: '400' }}
+                        defaultValue={current === questions.length ? null : questions[current - 1].numberOfAnswer}
+                        onChange={onChangeAnswerNum}
+                    />
+                    : null
+            }
+        </div>
+    ));
+
+    const answerNumRender = questions.map((question, index) => (
+        <div>
+            {
+                index === current - 1 && adding === false && deleting === 0 ?
+                    <InputNumber min={1} max={10}
+                        style={{ height: '34px', width: '60px', fontSize: '16px', fontWeight: '400' }}
+                        defaultValue={question.numberOfAnswer}
+                        onChange={onChangeAnswerNum}
+                    />
+                    : null
+            }
+            {
+                index === current - 1 && adding === false ?
+                    <div>
+                        {answerNumRenderDelete}
+                    </div>
+                    : null
+            }
+            {
+                index === current - 1 && adding === true ?
+
+                    <InputNumber min={1} max={10}
+                        style={{ height: '34px', width: '60px', fontSize: '16px', fontWeight: '400' }}
+                        onChange={onChangeAnswerNum}
                     />
                     : null
             }
@@ -841,13 +931,6 @@ function AddQuestions() {
         form.resetFields();
     }
 
-
-
-
-
-
-
-
     return (
         <AddQuestionsWrapper>
             <Spin spinning={loading} tip="Đang tải...">
@@ -861,7 +944,7 @@ function AddQuestions() {
                                     htmlType='submit'
                                     style={{ borderRadius: '6px' }}
                                     onClick={
-                                        () => { history.push(`/preview-test/${id}`) }
+                                        () => { history.push(`/preview-test/allow-edit/${id}`) }
                                     }
                                 >
                                     <CheckOutlined /> Xong
@@ -874,20 +957,25 @@ function AddQuestions() {
                                         <Col span={3}>
                                             <p style={{ fontSize: '18px', fontWeight: '900', margin: '0px' }}><CaretRightOutlined />Câu {current}</p>
                                         </Col>
-                                        <Col span={10}>
+                                        <Col span={21}>
                                             <Row>
-                                                <Col span={14}>
+                                                <Col span={7}>
+                                                    <Form.Item
+                                                        name='answers_num'
+                                                        label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Số đáp án</span>}
+                                                    >
+                                                        {answerNumRender}
+                                                    </Form.Item>
+                                                </Col>
+                                                <Col span={11}>
                                                     <Form.Item
                                                         name='subject'
-                                                        label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Đáp án</span>}
-                                                    // rules={[{ type: "email", required: true, message: <p style={{ color: '#F82C4D' }}>Thông tin bắt buộc</p> }]}
-                                                    // validateStatus={emailValidate ? "error" : null}
-                                                    // help={emailValidate ? "Email đã được đăng ký!" : null}
+                                                        label={<span style={{ color: '#000', fontSize: '16px', fontWeight: '900' }}>Đáp án đúng</span>}
                                                     >
                                                         {answersRender}
                                                     </Form.Item>
                                                 </Col>
-                                                <Col span={10}>
+                                                <Col span={6}>
                                                     <Form.Item
                                                         name='grade'
                                                         // label='Lớp'
@@ -899,39 +987,6 @@ function AddQuestions() {
                                                 </Col>
                                             </Row>
                                         </Col>
-                                        <Col span={4}>
-                                            {
-                                                current !== questions.length ?
-                                                    <Button
-                                                        className="change-button"
-                                                        size='large'
-                                                        style={{ borderRadius: '6px' }}
-                                                        onClick={() => {
-                                                            removeImage();
-                                                        }}
-                                                    >
-                                                        <EditOutlined /> Đổi câu hỏi
-                                                    </Button>
-                                                    : null
-                                            }
-                                        </Col>
-                                        <Col span={2}>
-                                            {
-                                                current !== questions.length ?
-                                                    <Button
-                                                        className="delete-button"
-                                                        size='large'
-                                                        style={{ borderRadius: '6px' }}
-                                                        onClick={() => {
-                                                            deleteQuestion();
-                                                        }}
-                                                    >
-                                                        <DeleteOutlined /> Xóa câu hỏi
-                                                    </Button>
-                                                    : null
-                                            }
-                                        </Col>
-
                                     </Row>
 
 
@@ -1027,10 +1082,45 @@ function AddQuestions() {
 
                                         </Col>
                                         <Col span={12} style={{ display: 'flex', justifyContent: 'center' }}>
+                                            <Row>
+                                                <Col span={12}>
+                                                    {
+                                                        current !== questions.length ?
+                                                            <Button
+                                                                className="change-button"
+                                                                size='large'
+                                                                style={{ borderRadius: '6px' }}
+                                                                onClick={() => {
+                                                                    removeImage();
+                                                                }}
+                                                            >
+                                                                <EditOutlined /> Đổi câu hỏi
+                                                    </Button>
+                                                            : null
+                                                    }
+                                                </Col>
+                                                <Col span={12}>
+                                                    {
+                                                        current !== questions.length ?
+                                                            <Button
+                                                                className="delete-button"
+                                                                size='large'
+                                                                style={{ borderRadius: '6px' }}
+                                                                onClick={() => {
+                                                                    deleteQuestion();
+                                                                }}
+                                                            >
+                                                                <DeleteOutlined /> Xóa câu hỏi
+                                                    </Button>
+                                                            : null
+                                                    }
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                        {/* <Col span={12} style={{ display: 'flex', justifyContent: 'center' }}>
                                             <Form
                                                 form={form}
                                                 style={{
-                                                    // marginLeft: "10px" 
                                                 }}
                                                 {...layout}
                                                 name='nest-messages'
@@ -1065,7 +1155,7 @@ function AddQuestions() {
                                                     </Form.Item>
                                                 </Space>
                                             </Form>
-                                        </Col>
+                                        </Col> */}
                                         <Col span={6} style={{ display: 'flex', justifyContent: 'center' }}>
                                             {
                                                 current !== questions.length ?

@@ -349,6 +349,15 @@ export const PreviewTestWrapper = styled.div`
             transition: all 0.0s cubic-bezier(0.78, 0.14, 0.15, 0.86);
             content: ' ';
         }
+        .ant-checkbox-checked .ant-checkbox-inner:after{
+            -webkit-transition: all 0.0s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+            transition: all 0.0s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+        }
+        .ant-checkbox-inner::after {
+            -webkit-transition: all 0.0s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+            transition: all 0.0s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+            /* content: ' '; */
+        }
     }
 
     .my-wrong-checkbox{

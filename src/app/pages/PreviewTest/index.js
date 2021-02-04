@@ -107,6 +107,7 @@ function PreviewTest() {
 
                 // setQuestions(res.data.quiz.questions);
                 // setCorrectAnswers(res.data.correctAnswers);
+                // console.log("RES DATA: ", res.data);
 
 
             }
@@ -127,6 +128,7 @@ function PreviewTest() {
 
                 setQuestions(res.data);
                 // setCorrectAnswers(res.data.correctAnswers);
+                console.log("RES DATA: ", res.data);
             }
         } catch (error) {
             console.log(error);
@@ -171,14 +173,16 @@ function PreviewTest() {
     const oneAnswerRender = (number, multiple, choices) => {
         if (multiple === true) {
             const optionsRender = options.slice(0, number).map((x, index) => (
-                <Checkbox value={index} className="my-checkbox">{x}</Checkbox>
+                <Checkbox value={index} className="my-checkbox">
+                    {x}
+                </Checkbox>
             ));
             return (
                 <Checkbox.Group
                     style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '0px' }}
                     // defaultValue={[1, 0]}
-                    value={questions[current - 1].correctAnswers[0]}
-                // onChange={onChangeMultiple}
+                    value={questions[current - 1].correctAnswers}
+                    // onChange={onChangeMultiple}
                 >
                     {optionsRender}
                 </Checkbox.Group>
@@ -578,7 +582,7 @@ function PreviewTest() {
                                                                 }}
                                                             />
                                                         </div>
-                                                        {oneAnswerRender(questions[current - 1].numberOfAnswer, questions[current - 1].multipleAnswers, null)}
+                                                        {oneAnswerRender(questions[current - 1].numberOfAnswer, questions[current - 1].correctAnswers.length > 1, null)}
 
                                                     </Card>
                                                 </Col>
