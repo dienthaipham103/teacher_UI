@@ -330,7 +330,7 @@ function EditTestInfo() {
                 duration: "2"
             });
 
-            history.push(`/preview-test/${id}`); // be careful with the order
+            history.push(`/preview-test/allow-edit/${id}`); // be careful with the order
 
             // if (res.code === 1) {
 
