@@ -574,11 +574,17 @@ function PreviewTest() {
                                                         style={{ marginTop: '20px' }}
                                                         className="question-card"
                                                     >
-                                                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                                        <div 
+                                                            style={{ display: 'flex',
+                                                                    justifyContent: 'center', 
+                                                                    alignItems: 'center',
+                                                                     }}
+                                                        >
                                                             <img
                                                                 src={questions[current - 1].image}
                                                                 style={{
-
+                                                                    maxWidth: '935px',
+                                                                    height: 'auto'
                                                                 }}
                                                             />
                                                         </div>
