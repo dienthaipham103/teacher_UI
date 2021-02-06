@@ -83,8 +83,9 @@ function AddQuestions() {
         correctAnswers: [0],
         image: "",
         multipleAnswers: false,
-        numberOfAnswer: 0,
-        _id: ""
+        numberOfAnswer: 2,
+        _id: "",
+        passScore: 1
     }]);
 
     const [previewVisible, setPreviewVisible] = useState(false);
@@ -251,8 +252,9 @@ function AddQuestions() {
                     correctAnswers: [0],
                     image: "",
                     multipleAnswers: false,
-                    numberOfAnswer: 0,
-                    _id: ""
+                    numberOfAnswer: 2,
+                    _id: "",
+                    passScore: 1
                 }]);
 
                 console.log('QUESTION AFTER ADDING: ', questions);
@@ -434,11 +436,12 @@ function AddQuestions() {
                 const initialData = {
                     index: current - 1,
                     // numberOfAnswer: 5,
-                    multipleAnswers: false,
+                    multipleAnswers: changeIs === "answer" ? value.length > 1: false,
+                    // multipleAnswers: value.length > 1 ? true: false,
                     // api mistake
                     correctAnswers: changeIs === "answer" ? value : [0],
-                    passScore: changeIs === "score" ? value : null,
-                    numberOfAnswer: changeIs === "answerNum" ? value : 0,
+                    passScore: changeIs === "score" ? value : 1,
+                    numberOfAnswer: changeIs === "answerNum" ? value : 2,
                     // imageAvailable: changeIs === "image" ? true : false,
                 }
                 let res = await createQuestionAPI({ id: id, data: initialData });
@@ -448,10 +451,11 @@ function AddQuestions() {
 
                     temp_questions[current - 1] = {
                         correctAnswers: changeIs === "answer" ? value : [0],
-                        passScore: changeIs === "score" ? value : null,
-                        numberOfAnswer: changeIs === "answerNum" ? value : 0,
+                        passScore: changeIs === "score" ? value : 1,
+                        numberOfAnswer: changeIs === "answerNum" ? value : 2,
                         image: "",
-                        multipleAnswers: false,
+                        multipleAnswers: changeIs === "answer" ? value.length > 1: false,
+                        // multipleAnswers: value.length > 1 ? true: false,
                         // numberOfAnswer: 5,
                         _id: res.data._id,
                         // imageAvailable: changeIs === "image" ? true : false,
@@ -463,9 +467,10 @@ function AddQuestions() {
                         correctAnswers: [0],
                         image: "",
                         multipleAnswers: false,
-                        numberOfAnswer: 0,
+                        numberOfAnswer: 2,
                         _id: "",
-                        imageAvailable: false
+                        imageAvailable: false,
+                        passScore: 1
                         // available
                     });
                     setQuestions(temp_questions);
@@ -505,7 +510,7 @@ function AddQuestions() {
         try {
             const initialData = {
                 index: current - 1,
-                numberOfAnswer: 5,
+                numberOfAnswer: 2,
                 multipleAnswers: false,
                 correctAnswers: [0]
             }
@@ -521,7 +526,7 @@ function AddQuestions() {
                     correctAnswers: [0],
                     image: "",
                     multipleAnswers: false,
-                    numberOfAnswer: 0,
+                    numberOfAnswer: 2,
                     // _id: res.data.questions[current - 1]
                     _id: res.data._id,
                     image: res.data.image
@@ -554,7 +559,7 @@ function AddQuestions() {
         try {
             const initialData = {
                 index: current,
-                numberOfAnswer: 5,
+                numberOfAnswer: 2,
                 multipleAnswers: false,
                 correctAnswers: [0]
             }
@@ -568,7 +573,7 @@ function AddQuestions() {
                     correctAnswers: [0],
                     image: "",
                     multipleAnswers: false,
-                    numberOfAnswer: 0,
+                    numberOfAnswer: 2,
                     _id: res.data._id,
                     image: res.data.image
                 });
@@ -640,14 +645,15 @@ function AddQuestions() {
             setQuestions(
                 questions.map((item, index) =>
                     item._id === current_id && index === current - 1
-                        ? { ...item, correctAnswers: value}
+                        ? { ...item, correctAnswers: value, multipleAnswers: value.length > 1}
                         : item
                 ))
 
             // call api
             try {
                 const data = {
-                    correctAnswers: value
+                    correctAnswers: value,
+                    multipleAnswers: value.length > 1
                 }
                 let res = await updateQuestionAPI({ id: id, questionId: current_id, data: data });
                 console.log('createQuestionAPI', res)
@@ -788,7 +794,7 @@ function AddQuestions() {
                 deleting === index_ + 1 ?
                     <InputNumber min={1} max={20}
                         style={{ height: '34px', width: '60px', fontSize: '16px', fontWeight: '400' }}
-                        defaultValue={current === questions.length ? null : questions[current - 1].passScore}
+                        defaultValue={current === questions.length ? 1 : questions[current - 1].passScore}
                         onChange={onChangeScore}
                     />
                     : null
@@ -819,7 +825,7 @@ function AddQuestions() {
 
                     <InputNumber min={1} max={20}
                         style={{ height: '34px', width: '60px', fontSize: '16px', fontWeight: '400' }}
-                        // defaultValue={question.passScore}
+                        defaultValue={1}
                         onChange={onChangeScore}
                     />
                     : null

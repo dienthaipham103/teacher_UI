@@ -349,14 +349,58 @@ export const PreviewTestWrapper = styled.div`
             transition: all 0.0s cubic-bezier(0.78, 0.14, 0.15, 0.86);
             content: ' ';
         }
-        .ant-checkbox-checked .ant-checkbox-inner:after{
-            -webkit-transition: all 0.0s cubic-bezier(0.78, 0.14, 0.15, 0.86);
-            transition: all 0.0s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+        
+    }
+
+    .my-checkbox-multiple{
+        .ant-checkbox-checked::after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #1890ff;
+            border-radius: 2px;
+            visibility: hidden;
+            -webkit-animation: antCheckboxEffect 0s ease-in-out;
+                    animation: antCheckboxEffect 0s ease-in-out;
+            -webkit-animation-fill-mode: backwards;
+                    animation-fill-mode: backwards;
+            content: '';
         }
-        .ant-checkbox-inner::after {
-            -webkit-transition: all 0.0s cubic-bezier(0.78, 0.14, 0.15, 0.86);
-            transition: all 0.0s cubic-bezier(0.78, 0.14, 0.15, 0.86);
-            /* content: ' '; */
+    
+        .ant-checkbox-inner {
+            position: relative;
+            top: 0;
+            left: 0;
+            display: block;
+            /* width: 16px; */
+            /* height: 16px; */
+            direction: ltr;
+            background-color: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 2px;
+            border-collapse: separate;
+            -webkit-transition: all 0s;
+            transition: all 0s;
+        }
+       
+        .ant-checkbox-checked .ant-checkbox-inner::after {
+            position: absolute;
+            display: table;
+            border: 2px solid #fff;
+            border-top: 0;
+            border-left: 0;
+            -webkit-transform: rotate(45deg) scale(1) translate(-50%, -50%);
+                    transform: rotate(45deg) scale(1) translate(-50%, -50%);
+            opacity: 1;
+            -webkit-transition: all 0s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0s;
+            transition: all 0s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0s;
+            content: ' ';
+        }
+        .ant-checkbox-checked .ant-checkbox-inner {
+            background-color: #1890ff;
+            border-color: #1890ff;
         }
     }
 

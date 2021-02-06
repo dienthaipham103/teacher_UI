@@ -173,7 +173,7 @@ function PreviewTest() {
     const oneAnswerRender = (number, multiple, choices) => {
         if (multiple === true) {
             const optionsRender = options.slice(0, number).map((x, index) => (
-                <Checkbox value={index} className="my-checkbox">
+                <Checkbox value={index} className="my-checkbox-multiple">
                     {x}
                 </Checkbox>
             ));
