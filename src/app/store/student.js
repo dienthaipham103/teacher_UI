@@ -17,14 +17,6 @@ export const getAllStudent = createAsyncThunk(
     }
 );
 
-// export const createNewStudent = createAsyncThunk(
-//     "user/createNewStudentSuccess",
-//     async ({ email, fullname }) => {
-//         const response = await createNewStudentAPI({ email, fullname });
-//         console.log(response)
-//         return response;
-//     }
-// );
 
 export const slice = createSlice({
     name: 'student',
@@ -51,10 +43,7 @@ export const slice = createSlice({
         changeStudentPracticeStatus(state, action) {
             state.studentPracticeStatus = action.payload
         }
-        // changeSelectedKey(state, action){
-        //     console.log('**************************')
-        //     state.selectedKey = action.payload;
-        // }
+       
     },
     extraReducers: {
         [getAllStudent.pending]: (state, {payload}) => {
@@ -75,12 +64,5 @@ export const { addStudent, editStudent, deleteStudent, changeSelectedKey, change
 
 export const selectAllStudent = state => state.student.studentList;
 
-// export const selectKeyStatus = state => state.student.selectedKey;
-
-// export const selectStudentById = (state, studentId) => 
-// state.student.studentList.find(student => student._id == studentId);
-
-// export const selectStudentById = (state, studentId) => 
-// state.student.studentList.find(student => student._id == "5f51d23819ae66573a0cb01a");
 
 export default slice.reducer;

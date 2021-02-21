@@ -77,21 +77,7 @@ function Login() {
         <div
           style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px', marginRight: '40px' }}
         >
-          {/* <Space size="large">
-            <Route path='/privacy-policy' component={() => {
-              window.location.href = 'https://app.wiiquiz.com/';
-              return null;
-            }} />
-            <a href="https://app.wiiquiz.com/">Học sinh</a>
-
-            <Button
-              onClick={() => {
-
-              }}
-            >
-              Giáo viên
-          </Button>
-          </Space> */}
+         
           <Space size="middle">
             <Button
               className={"active-button"}
@@ -101,11 +87,7 @@ function Login() {
             >
               Giáo viên
             </Button>
-            {/* <Route path='/privacy-policy' component={() => {
-              window.location.href = 'https://app.wiiquiz.com/';
-              return null;
-            }} />
-            <a href="https://app.wiiquiz.com/">Học sinh</a> */}
+            
             <Button
               className={"non-active-button"}
               size='large'
@@ -246,38 +228,11 @@ function Login() {
                           Đăng nhập bằng Google
                         </span>
                       </Button>
-                      // <GoogleButton
-                      //   type='light'
-                      //   label='Đăng nhập bằng Google'
-                      //   onClick={renderProps.onClick}
-                      //   style=
-                      //     {{
-                      //       width: '100%', 
-                      //       borderRadius: '5px',
-                      //       fontSize: '16px', 
-                      //       fontWeight: '900',
-                      //       fontFamily: 'Quicksand', 
-                      //       color: '#000',
-                      //       textAlign: 'center'
-                      //     }}
-                      // />
+                     
                     )}
                   />
 
-                  {/* <GoogleLogin
-                  clientId={"989170060761-gqshnvs9nvk67n5g0peq4pdi8en8d38s.apps.googleusercontent.com"}
-                  onSuccess={googleLogin}
-                  onFailure={handleLoginFailure}
-                  cookiePolicy={'single_host_origin'}
-                  responseType='code,token'
-                  icon={false}
-                  className="btnGoogle"
-                >
-                  <i className="fa fa-google-plus" style={{
-                    marginLeft: '5px'
-                  }} />
-                  <span style={{fontSize: '16px', display: 'flex', justifyContent: 'center'}}>&nbsp;&nbsp;Đăng nhập bằng Google</span>
-                </GoogleLogin> */}
+                  
                 </Form.Item>
 
                 <Form.Item

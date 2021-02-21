@@ -7,13 +7,8 @@ import { Link, withRouter } from 'react-router-dom';
 import { MenuLeftWrapper } from './MenuLeftStyle';
 
 import {
-  UserOutlined,
-  UserAddOutlined,
-  SolutionOutlined,
-  CopyOutlined,
-  PhoneOutlined,
+  BarChartOutlined,
   FormOutlined,
-  EditOutlined,
   RiseOutlined,
   ContactsOutlined,
   HomeOutlined,
@@ -130,6 +125,10 @@ export default withRouter(function MenuLeft({ location }) {
 
           <Menu.Item key='/test-list' icon={<SnippetsOutlined style={{ fontSize: '16px'}}/>}>
             <NavLink to={'/test-list'}>Đề đang làm</NavLink>
+          </Menu.Item>
+
+          <Menu.Item key='/test-track' icon={<BarChartOutlined style={{ fontSize: '16px'}}/>}>
+            <NavLink to={'/test-track'}>Theo dõi đề</NavLink>
           </Menu.Item>
 
          

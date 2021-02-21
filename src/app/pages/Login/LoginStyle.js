@@ -3,7 +3,11 @@ import Background from 'assets/images/background.png';
 
 export const LoginWrapper = styled.div`
 
-.active-button{
+    a{
+        text-decoration: none !important;
+    }
+
+    .active-button{
         background: #2596be;
         font-size: 16px;
         font-weight: 900;

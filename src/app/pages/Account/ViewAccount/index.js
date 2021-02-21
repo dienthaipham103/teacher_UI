@@ -2,18 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
     selectAccount,
-    selectAccountStatus,
-    getAccount,
-    changeFirstLoading
 } from 'app/store/account';
 import {
     selectAllStudent,
-    getAllStudent,
 } from 'app/store/student';
 import { ViewAccountWrapper } from './ViewAccountStyle';
-import { Card, Button, Typography, Skeleton, Avatar, Row, Col } from 'antd';
-import { Link, useHistory } from 'react-router-dom';
-import { TeamOutlined, SendOutlined, UserOutlined, HomeOutlined, GlobalOutlined, SearchOutlined, HistoryOutlined } from '@ant-design/icons';
+import { Card, Button, Typography, Avatar, Row, Col } from 'antd';
+import { useHistory } from 'react-router-dom';
+import { TeamOutlined, UserOutlined, GlobalOutlined, CopyOutlined } from '@ant-design/icons';
 
 
 function ViewAccount() {
@@ -84,7 +80,7 @@ function ViewAccount() {
                             <Title level={5}><UserOutlined style={{marginRight: '10px'}}/>Tên tài khoản</Title>
                             <p style={{marginLeft: '26px'}}>{username}</p>
 
-                            <Title level={5}><TeamOutlined style={{marginRight: '10px'}}/>Số lượng học viên</Title>
+                            <Title level={5}><CopyOutlined style={{marginRight: '10px'}}/>Số đề đã làm</Title>
                             <p style={{marginLeft: '26px'}}>{studentNumber}</p>
                         </div>
                     </Card>

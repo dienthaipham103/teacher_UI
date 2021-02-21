@@ -45,7 +45,8 @@ const pageNames = {
   '/add-questions': 'Thêm & chỉnh sửa câu hỏi',
   '/edit-test-info': 'Chỉnh sửa thông tin đề',
   '/test-list': 'Đề đang làm',
-  '/preview-test': 'Xem trước đề',
+  '/test-track': 'Theo dõi đề',
+  '/preview-test': 'Xem đề',
   '/preview-test/not-allow-edit': 'Xem đề',
 }
 

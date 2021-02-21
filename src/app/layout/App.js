@@ -11,6 +11,7 @@ import CreateTest from 'app/pages/CreateTest';
 import AddQuestions from 'app/pages/AddQuestions';
 import EditTestInfo from 'app/pages/EditTestInfo';
 import TestList from 'app/pages/TestList';
+import TestTrack from 'app/pages/TestTrack';
 import PreviewTest from 'app/pages/PreviewTest';
 import Intro from 'app/pages/Intro';
 import Quiz from 'app/pages/Quiz';
@@ -247,6 +248,19 @@ function App() {
                       }}
                     >
                       <TestList />
+                    </Content>
+                  </PrivateRoute>
+                  <PrivateRoute path='/test-track' exact>
+                    <Content
+                      className='site-layout'
+                      style={{
+                        paddingLeft: '280px',
+                        paddingTop: '40px',
+                        paddingRight: '60px',
+                        backgroundColor: '#F6F8F8'
+                      }}
+                    >
+                      <TestTrack />
                     </Content>
                   </PrivateRoute>
                   <PrivateRoute path='/preview-test/:edit/:id' exact>

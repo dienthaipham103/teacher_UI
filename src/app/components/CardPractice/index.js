@@ -41,7 +41,12 @@ export const CardPractice = ({
         onClick={() => {
           if (quizButtonClick == false) {
             if (quizOfStudent === true) {
-              if(status==="done"){
+              // go to the test track page
+              if (status === "test-track") {
+                history.push(`/preview-test/allow-edit/${quizId}`)
+              }
+
+              if (status === "done") {
                 dispatch(changeStudentPracticeStatus('1'));
               }
               history.push(`/student-practice/${status}/${quizId}/${studentId}`);
@@ -53,6 +58,7 @@ export const CardPractice = ({
 
           }
           console.log('quiz click')
+          console.log(status)
         }}
         // loading
         cover={<img alt='example' src={imgUrl} />}
