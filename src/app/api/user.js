@@ -71,9 +71,11 @@ export const getDonePracticeStudentAPI = ({ id }) => {
   return axiosClient.get(`practice/done/${id}`);
 };
 
-
-
-
 export const changePasswordAPI = ({password, newPassword}) => {
   return axiosClient.post(`user/change-password`, {password, newPassword});
+};
+
+// get number of test that the teacher created
+export const getTestNumberCreatedAPI = () => {
+  return axiosClient.get(`user/number-of-quiz-created`);
 };

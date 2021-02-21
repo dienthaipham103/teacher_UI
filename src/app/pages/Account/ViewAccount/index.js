@@ -6,11 +6,13 @@ import {
 import {
     selectAllStudent,
 } from 'app/store/student';
+import {
+    getTestNumberCreatedAPI
+} from 'app/api/user';
 import { ViewAccountWrapper } from './ViewAccountStyle';
-import { Card, Button, Typography, Avatar, Row, Col } from 'antd';
+import { Card, Button, Typography, Avatar, Row, Col, Skeleton } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { TeamOutlined, UserOutlined, GlobalOutlined, CopyOutlined } from '@ant-design/icons';
-
 
 function ViewAccount() {
     const { Title, Text } = Typography;
@@ -19,21 +21,41 @@ function ViewAccount() {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    // const [username, setUsername] = useState("");
-    // const AccountStatus = useSelector(selectAccountStatus);
-    // useEffect(() => {
-    // }, AccountStatus);
+    const [testNumber, setTestNumber] = useState(null);
+    const [practiceNumber, setPracticeNumber] = useState(null);
+    const [quizNumberLoading, setQuizNumberLoading] = useState(false);
 
-    
     const username = useSelector(selectAccount).username;
     const email = useSelector(selectAccount).email;
-    const studentNumber = useSelector(selectAllStudent).length;
+
+
+    const getQuizNumberCreated = async () => {
+        try {
+            setQuizNumberLoading(true);
+            let res = await getTestNumberCreatedAPI();
+            console.log("RES ========== ", res);
+            setTestNumber(res.numberOfExam);
+            setPracticeNumber(res.numberOfPractice);
+            setQuizNumberLoading(false);
+        } catch (error) {
+            console.log(error);
+        } finally {
+        }
+    };
+
+    useEffect(() => {
+        getQuizNumberCreated();
+        console.log("KAKAKAKAKAKAKKAKAKAKAKAKKAKAKAKAKKAKAKak");
+    }, []);
+
+
+
 
     const getCharacter = () => {
-        if(username == undefined){
+        if (username == undefined) {
             return ""
         }
-        else{
+        else {
             return username[0].toUpperCase()
         }
     }
@@ -54,38 +76,46 @@ function ViewAccount() {
                     </Title>
                 </div>
             </div>
-          
-            <Row
-                gutter={[16, 16]}
-            >
-                <Col
-                    sm={24}
-                    xl={16}
-                    // style={{ paddingRight: 30 }}
+
+            <Skeleton active loading={quizNumberLoading}>
+                <Row
+                    gutter={[16, 16]}
                 >
-                    <Card hoverable>
-                        <div>
-                            <Button 
-                                size="large"
-                                className="edit-button" 
-                                onClick={() => { history.push('/edit-account') }}
-                                style={{marginBottom: '40px'}}
+                    <Col
+                        sm={24}
+                        xl={16}
+                    // style={{ paddingRight: 30 }}
+                    >
+
+                        <Card hoverable>
+                            <div>
+                                <Button
+                                    size="large"
+                                    className="edit-button"
+                                    onClick={() => { history.push('/edit-account') }}
+                                    style={{ marginBottom: '40px' }}
                                 >
-                                Cập nhật
-                            </Button>
+                                    Cập nhật
+                                    </Button>
 
-                            <Title level={5}><GlobalOutlined style={{marginRight: '10px'}}/>Địa chỉ Email</Title>
-                            <p style={{marginLeft: '26px'}}>{email}</p>
+                                <Title level={5}><GlobalOutlined style={{ marginRight: '10px' }} />Địa chỉ Email</Title>
+                                <p style={{ marginLeft: '26px' }}>{email}</p>
 
-                            <Title level={5}><UserOutlined style={{marginRight: '10px'}}/>Tên tài khoản</Title>
-                            <p style={{marginLeft: '26px'}}>{username}</p>
+                                <Title level={5}><UserOutlined style={{ marginRight: '10px' }} />Tên tài khoản</Title>
+                                <p style={{ marginLeft: '26px' }}>{username}</p>
 
-                            <Title level={5}><CopyOutlined style={{marginRight: '10px'}}/>Số đề đã làm</Title>
-                            <p style={{marginLeft: '26px'}}>{studentNumber}</p>
-                        </div>
-                    </Card>
-                </Col>
-            </Row>
+                                <Title level={5}><CopyOutlined style={{ marginRight: '10px' }} />Số đề thi đã làm</Title>
+                                <p style={{ marginLeft: '26px' }}>{testNumber}</p>
+
+                                <Title level={5}><CopyOutlined style={{ marginRight: '10px' }} />Số đề luyện tập đã làm</Title>
+                                <p style={{ marginLeft: '26px' }}>{practiceNumber}</p>
+                            </div>
+
+                        </Card>
+
+                    </Col>
+                </Row>
+            </Skeleton>
         </ViewAccountWrapper>
     )
 }
