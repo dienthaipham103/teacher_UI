@@ -12,12 +12,14 @@ import AddQuestions from 'app/pages/AddQuestions';
 import EditTestInfo from 'app/pages/EditTestInfo';
 import TestList from 'app/pages/TestList';
 import TestTrack from 'app/pages/TestTrack';
+import OneTestTrack from 'app/pages/TestTrack/OneTestTrack';
 import PreviewTest from 'app/pages/PreviewTest';
 import Intro from 'app/pages/Intro';
 import Quiz from 'app/pages/Quiz';
 import Practice from 'app/pages/Practice';
 import PracticeInfo from 'app/pages/Practice/PracticeInfo';
 import Contact from 'app/pages/Contact';
+import Instruction from 'app/pages/Instruction';
 import { ThemeProvider } from 'styled-components';
 import { theme } from './theme';
 import ModalManager from 'app/components/ModalManager';
@@ -141,7 +143,12 @@ function App() {
                   <PrivateRoute path='/home' exact>
                     <Content
                       className='site-layout'
-                      style={{ paddingLeft: '260px', paddingTop: '40px' }}
+                      style={{
+                        paddingLeft: '280px',
+                        paddingTop: '40px',
+                        paddingRight: '60px',
+                        backgroundColor: '#F6F8F8'
+                      }}
                     >
                       <HomePage />
                     </Content>
@@ -261,6 +268,19 @@ function App() {
                       }}
                     >
                       <TestTrack />
+                    </Content>
+                  </PrivateRoute>
+                  <PrivateRoute path='/test-track/:id' exact>
+                    <Content
+                      className='site-layout'
+                      style={{
+                        paddingLeft: '280px',
+                        paddingTop: '40px',
+                        paddingRight: '60px',
+                        backgroundColor: '#F6F8F8'
+                      }}
+                    >
+                      <OneTestTrack />
                     </Content>
                   </PrivateRoute>
                   <PrivateRoute path='/preview-test/:edit/:id' exact>
@@ -564,7 +584,12 @@ function App() {
                   <PrivateRoute path='/contact' exact>
                     <Content
                       className='site-layout'
-                      style={{ padding: '0px 0px' }}
+                      style={{
+                        paddingLeft: '280px',
+                        paddingTop: '40px',
+                        paddingRight: '60px',
+                        backgroundColor: '#F6F8F8'
+                      }}
                     >
                       <Contact />
                     </Content>
@@ -587,6 +612,19 @@ function App() {
                       }}
                     >
                       <ChildQuiz />
+                    </Content>
+                  </PrivateRoute>
+                  <PrivateRoute path='/instruction' exact>
+                    <Content
+                      className='site-layout'
+                      style={{
+                        paddingLeft: '280px',
+                        paddingTop: '40px',
+                        paddingRight: '60px',
+                        backgroundColor: '#F6F8F8'
+                      }}
+                    >
+                      <Instruction />
                     </Content>
                   </PrivateRoute>
                   <Route path='/notfound' exact>

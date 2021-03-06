@@ -70,7 +70,10 @@ export const deleteQuestionAPI = ({id, questionId}) => {
   return axiosClient.delete(`quiz/${id}/question/${questionId}`);
 };
 
-// get info of a quiz
+// tracking a quiz
+export const getDoneQuizListAPI = ({id}) => {
+  return axiosClient.get(`test/quiz/${id}`);
+};
 
 
 // get question of a quiz

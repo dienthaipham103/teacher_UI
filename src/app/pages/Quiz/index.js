@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Row, Col, Button, PageHeader, Card, Typography, Skeleton, Tabs, Select } from 'antd';
+import { Row, Col, Button, PageHeader, Card, Typography, Skeleton, Tabs, Select, Tag } from 'antd';
 import { openModal } from 'app/store/modal';
 import { QuizWrapper } from './QuizStyle';
 
@@ -102,20 +102,21 @@ function Quiz() {
                       combinedId={null}
                       quizId={quiz._id}
                       quizButtonClick={quizButtonClick}
-                      title={quiz.name}
+                      title={
+                        < div style={{ display: 'inline' }}>
+                          {quiz.name}
+                        </div>
+                      }
                       imgUrl={quiz.images.cover}
                       description={
-                        quiz.description.length < 60 ?
-                          <div>
-                            <p style={{ padding: '0px', margin: '0px' }}>
-                              {quiz.description}
-                            </p>
-                            <span style={{ color: '#fff' }}>{'.'.repeat(60 - quiz.description.length)}</span>
+                        <div>
+                          <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'center' }}>
+                            <Tag color="blue" >
+                              Đề {quiz.language === "VIETNAMESE" ? "Tiếng Việt" : "Tiếng Anh"}
+                            </Tag>
                           </div>
-                          :
-                          <p>
-                            {quiz.description.substring(0, 60) + '...'}
-                          </p>
+                        </div>
+
                       }
                       actions={[
                         <Row align="middle">
@@ -172,20 +173,21 @@ function Quiz() {
                         combinedId={null}
                         quizId={quiz._id}
                         quizButtonClick={quizButtonClick}
-                        title={quiz.name}
+                        title={
+                          < div style={{ display: 'inline' }}>
+                            {quiz.name}
+                          </div>
+                        }
                         imgUrl={quiz.images.cover}
                         description={
-                          quiz.description.length < 60 ?
-                            <div>
-                              <p style={{ padding: '0px', margin: '0px' }}>
-                                {quiz.description}
-                              </p>
-                              <span style={{ color: '#fff' }}>{'.'.repeat(60 - quiz.description.length)}</span>
+                          <div>
+                            <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'center' }}>
+                              <Tag color="blue" >
+                                Đề {quiz.language === "VIETNAMESE" ? "Tiếng Việt" : "Tiếng Anh"}
+                              </Tag>
                             </div>
-                            :
-                            <p>
-                              {quiz.description.substring(0, 60) + '...'}
-                            </p>
+                          </div>
+  
                         }
                         actions={[
                           <Row align="middle">

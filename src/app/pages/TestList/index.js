@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Row, Col, Button, PageHeader, Card, Typography, Skeleton, Tabs, Select, Space, Modal, Table } from 'antd';
+import { Row, Col, Button, PageHeader, Card, Typography, Skeleton, Tabs, Select, Space, Modal, Table, Tag } from 'antd';
 import { TestListWrapper } from './TestListStyle';
 
 import { CardPractice } from 'app/components/CardPractice';
@@ -108,21 +108,22 @@ function TestList() {
                                         quizId={test._id}
                                         studentId={null}
                                         quizButtonClick={null}
-                                        title={test.name}
+                                        title={
+                                            <div style={{display: 'inline'}}>
+                                              {test.name}
+                                            </div>
+                                          }
                                         imgUrl={test.images.cover}
                                         description={
-                                            test.description.length < 60 ?
-                                                <div>
-                                                    <p style={{ padding: '0px', margin: '0px' }}>
-                                                        {test.description}
-                                                    </p>
-                                                    <span style={{ color: '#fff' }}>{'.'.repeat(60 - test.description.length)}</span>
-                                                </div>
-                                                :
-                                                <p>
-                                                    {test.description.substring(0, 60) + '...'}
-                                                </p>
-                                        }
+                                            <div>
+                                              {/* <div>{ReactHtmlParser(practice.description)}</div> */}
+                                              <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'center' }}>
+                                                <Tag color="blue" >
+                                                  Đề {test.language === "VIETNAMESE" ? "Tiếng Việt" : "Tiếng Anh"}
+                                                </Tag>
+                                              </div>
+                                            </div>
+                                          }
                                         actions={[
                                             <Row align="middle">
                                                 <Col span={7}>
@@ -172,21 +173,22 @@ function TestList() {
                                         quizId={practice._id}
                                         studentId={null}
                                         quizButtonClick={null}
-                                        title={practice.name}
+                                        title={
+                                            <div style={{display: 'inline'}}>
+                                              {practice.name}
+                                            </div>
+                                          }
                                         imgUrl={practice.images.cover}
                                         description={
-                                            practice.description.length < 60 ?
-                                                <div>
-                                                    <p style={{ padding: '0px', margin: '0px' }}>
-                                                        {practice.description}
-                                                    </p>
-                                                    <span style={{ color: '#fff' }}>{'.'.repeat(60 - practice.description.length)}</span>
-                                                </div>
-                                                :
-                                                <p>
-                                                    {practice.description.substring(0, 60) + '...'}
-                                                </p>
-                                        }
+                                            <div>
+                                              {/* <div>{ReactHtmlParser(practice.description)}</div> */}
+                                              <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'center' }}>
+                                                <Tag color="blue" >
+                                                  Đề {practice.language === "VIETNAMESE" ? "Tiếng Việt" : "Tiếng Anh"}
+                                                </Tag>
+                                              </div>
+                                            </div>
+                                          }
                                         actions={[
                                             <Row align="middle">
                                                 <Col span={7}>

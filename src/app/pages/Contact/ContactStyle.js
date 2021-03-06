@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const HomepageWrapper = styled.div`
+export const ContactWrapper = styled.div`
 
     p{
         font-size: 16px;
@@ -11,4 +11,3 @@ export const HomepageWrapper = styled.div`
     }
 
 `;
-

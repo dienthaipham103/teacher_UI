@@ -13,7 +13,8 @@ import {
   ContactsOutlined,
   HomeOutlined,
   FileAddOutlined,
-  SnippetsOutlined
+  SnippetsOutlined,
+  UnorderedListOutlined
 } from '@ant-design/icons';
 
 import { changeStudentPracticeStatus } from "app/store/student";
@@ -115,10 +116,6 @@ export default withRouter(function MenuLeft({ location }) {
             </NavLink>
           </Menu.Item> */}
 
-          <Menu.Item key='/contact' icon={<ContactsOutlined style={{ fontSize: '16px'}}/>}>
-            <NavLink to={'/contact'}>Liên hệ</NavLink>
-          </Menu.Item>
-
           <Menu.Item key='/create-test' icon={<FileAddOutlined style={{ fontSize: '16px'}}/>}>
             <NavLink to={'/create-test'}>Làm đề</NavLink>
           </Menu.Item>
@@ -131,6 +128,13 @@ export default withRouter(function MenuLeft({ location }) {
             <NavLink to={'/test-track'}>Theo dõi đề</NavLink>
           </Menu.Item>
 
+          <Menu.Item key='/contact' icon={<ContactsOutlined style={{ fontSize: '16px'}}/>}>
+            <NavLink to={'/contact'}>Liên hệ</NavLink>
+          </Menu.Item>
+
+          <Menu.Item key='/instruction' icon={<UnorderedListOutlined style={{ fontSize: '16px'}}/>}>
+            <NavLink to={'/instruction'}>Hướng dẫn</NavLink>
+          </Menu.Item>
          
         
         </Menu>

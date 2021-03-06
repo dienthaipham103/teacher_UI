@@ -1,14 +1,9 @@
 import styled from "styled-components";
 
-export const HomepageWrapper = styled.div`
+export const InstructionWrapper = styled.div`
 
     p{
         font-size: 16px;
     }
 
-    a{
-        font-size: 16px;
-    }
-
 `;
-

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Row, Col, Button, PageHeader, Card, Typography, Skeleton, Tabs, Select, Space, Modal, Table } from 'antd';
+import { Row, Col, Button, PageHeader, Card, Typography, Skeleton, Tabs, Select, Space, Modal, Table, Tag } from 'antd';
 import { TestTrackWrapper } from './TestTrackStyle';
 
 import { CardPractice } from 'app/components/CardPractice';
+import { CardQuiz } from 'app/components/CardQuiz';
 import { FolderOutlined, FileTextOutlined, UserOutlined, FieldTimeOutlined } from '@ant-design/icons';
 
 
@@ -21,7 +22,7 @@ import {
 } from 'app/api/quiz';
 
 
-function TestList() {
+function TestTrack() {
     const { Title } = Typography;
     const { TabPane } = Tabs;
     const { Option } = Select;
@@ -102,28 +103,24 @@ function TestList() {
                         <Row gutter={[16, 16]}>
                             {tests.map(test => (
                                 <Col sm={12} xl={8} style={{ paddingRight: 30 }} key={test._id}>
-                                    <CardPractice
-                                        quizOfStudent={true}
-                                        status={'test-track'}
-                                        // status={null}
+                                    <CardQuiz
+                                        quizOfStudent={false}
+                                        status={null}
                                         quizId={test._id}
                                         studentId={null}
                                         quizButtonClick={quizButtonClick}
                                         title={test.name}
                                         imgUrl={test.images.cover}
                                         description={
-                                            test.description.length < 60 ?
-                                                <div>
-                                                    <p style={{ padding: '0px', margin: '0px' }}>
-                                                        {test.description}
-                                                    </p>
-                                                    <span style={{ color: '#fff' }}>{'.'.repeat(60 - test.description.length)}</span>
-                                                </div>
-                                                :
-                                                <p>
-                                                    {test.description.substring(0, 60) + '...'}
-                                                </p>
-                                        }
+                                            <div>
+                                              {/* <div>{ReactHtmlParser(practice.description)}</div> */}
+                                              <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'center' }}>
+                                                <Tag color="blue" >
+                                                  Đề {test.language === "VIETNAMESE" ? "Tiếng Việt" : "Tiếng Anh"}
+                                                </Tag>
+                                              </div>
+                                            </div>
+                                          }
                                         actions={[
                                             <Row align="middle">
                                                 <Col span={7}>
@@ -157,10 +154,10 @@ function TestList() {
                                                             setSelectedStudentId(test._id);
                                                             // setClick(true);
                                                             // setQuizButtonClick(true);
-                                                            history.push(`/preview-test/allow-edit/${test._id}`)
+                                                            history.push(`/test-track/${test._id}`)
                                                         }}
                                                     >
-                                                        Chi tiết
+                                                        Theo dõi
                                                     </Button>
                                                 </Col>
                                             </Row>
@@ -179,26 +176,23 @@ function TestList() {
                             {practices.map(practice => (
                                 <Col sm={12} xl={8} style={{ paddingRight: 30 }} key={practice._id}>
                                     <CardPractice
-                                        quizOfStudent={null}
+                                        quizOfStudent={false}
                                         status={null}
                                         quizId={practice._id}
                                         studentId={null}
-                                        quizButtonClick={null}
+                                        quizButtonClick={quizButtonClick}
                                         title={practice.name}
                                         imgUrl={practice.images.cover}
                                         description={
-                                            practice.description.length < 60 ?
-                                                <div>
-                                                    <p style={{ padding: '0px', margin: '0px' }}>
-                                                        {practice.description}
-                                                    </p>
-                                                    <span style={{ color: '#fff' }}>{'.'.repeat(60 - practice.description.length)}</span>
-                                                </div>
-                                                :
-                                                <p>
-                                                    {practice.description.substring(0, 60) + '...'}
-                                                </p>
-                                        }
+                                            <div>
+                                              {/* <div>{ReactHtmlParser(practice.description)}</div> */}
+                                              <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'center' }}>
+                                                <Tag color="blue" >
+                                                  Đề {practice.language === "VIETNAMESE" ? "Tiếng Việt" : "Tiếng Anh"}
+                                                </Tag>
+                                              </div>
+                                            </div>
+                                          }
                                         actions={[
                                             <Row align="middle">
                                                 <Col span={7}>
@@ -216,15 +210,25 @@ function TestList() {
                                                     <Button
                                                         className="active-button"
                                                         size="large"
+                                                        onMouseEnter={() => {
+                                                            setQuizButtonClick(true);
+                                                        }}
+                                                        onMouseLeave={() => {
+                                                            if (click == false) {
+                                                                setQuizButtonClick(false);
+                                                            }
+
+                                                        }}
                                                         onClick={() => {
                                                             setSelectedStudentId(practice._id);
-                                                            setClick(true);
-                                                            setQuizButtonClick(true);
+                                                            // setClick(true);
+                                                            // setQuizButtonClick(true);
                                                             // setVisible(true);
-                                                            history.push(`/preview-test/allow-edit/${practice._id}`)
+                                                            // history.push(`/test-track/${practice._id}`);
+                                                            history.push(`/test-track/aa`);
                                                         }}
                                                     >
-                                                        Chi tiết
+                                                        Theo dõi
                                                     </Button>
                                                 </Col>
                                             </Row>
@@ -245,4 +249,4 @@ function TestList() {
     );
 }
 
-export default TestList;
+export default TestTrack;
