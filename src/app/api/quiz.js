@@ -75,5 +75,10 @@ export const getDoneQuizListAPI = ({id}) => {
   return axiosClient.get(`test/quiz/${id}`);
 };
 
+// tracking practice
+export const getDonePracticeListAPI = ({id}) => {
+  return axiosClient.get(`practice/get-practice-by-quiz/${id}`);
+};
+
 
 // get question of a quiz

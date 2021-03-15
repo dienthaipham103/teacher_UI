@@ -154,7 +154,7 @@ function TestTrack() {
                                                             setSelectedStudentId(test._id);
                                                             // setClick(true);
                                                             // setQuizButtonClick(true);
-                                                            history.push(`/test-track/${test._id}`)
+                                                            history.push(`/test-track/test/${test._id}`)
                                                         }}
                                                     >
                                                         Theo dõi
@@ -225,7 +225,7 @@ function TestTrack() {
                                                             // setQuizButtonClick(true);
                                                             // setVisible(true);
                                                             // history.push(`/test-track/${practice._id}`);
-                                                            history.push(`/test-track/aa`);
+                                                            history.push(`/test-track/practice/${practice._id}`);
                                                         }}
                                                     >
                                                         Theo dõi

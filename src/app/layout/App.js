@@ -13,6 +13,9 @@ import EditTestInfo from 'app/pages/EditTestInfo';
 import TestList from 'app/pages/TestList';
 import TestTrack from 'app/pages/TestTrack';
 import OneTestTrack from 'app/pages/TestTrack/OneTestTrack';
+import OnePracticeTrack from 'app/pages/TestTrack/OnePracticeTrack';
+import TestResultReview from 'app/pages/TestTrack/OneTestTrack/TestResultReview';
+import TestResultDetail from 'app/pages/TestTrack/OneTestTrack/TestResultDetail';
 import PreviewTest from 'app/pages/PreviewTest';
 import Intro from 'app/pages/Intro';
 import Quiz from 'app/pages/Quiz';
@@ -270,7 +273,7 @@ function App() {
                       <TestTrack />
                     </Content>
                   </PrivateRoute>
-                  <PrivateRoute path='/test-track/:id' exact>
+                  <PrivateRoute path='/test-track/test/:id' exact>
                     <Content
                       className='site-layout'
                       style={{
@@ -281,6 +284,45 @@ function App() {
                       }}
                     >
                       <OneTestTrack />
+                    </Content>
+                  </PrivateRoute>
+                  <PrivateRoute path='/test-track/practice/:id' exact>
+                    <Content
+                      className='site-layout'
+                      style={{
+                        paddingLeft: '280px',
+                        paddingTop: '40px',
+                        paddingRight: '60px',
+                        backgroundColor: '#F6F8F8'
+                      }}
+                    >
+                      <OnePracticeTrack />
+                    </Content>
+                  </PrivateRoute>
+                  <PrivateRoute path='/test-track/test-result-review/:combinedId' exact>
+                    <Content
+                      className='site-layout'
+                      style={{
+                        paddingLeft: '280px',
+                        paddingTop: '40px',
+                        paddingRight: '60px',
+                        backgroundColor: '#F6F8F8'
+                      }}
+                    >
+                      <TestResultReview />
+                    </Content>
+                  </PrivateRoute>
+                  <PrivateRoute path='/test-track/test-result-detail/:combinedId' exact>
+                    <Content
+                      className='site-layout'
+                      style={{
+                        paddingLeft: '280px',
+                        paddingTop: '40px',
+                        paddingRight: '60px',
+                        backgroundColor: '#F6F8F8'
+                      }}
+                    >
+                      <TestResultDetail />
                     </Content>
                   </PrivateRoute>
                   <PrivateRoute path='/preview-test/:edit/:id' exact>
@@ -361,7 +403,7 @@ function App() {
                       <QuizInfo />
                     </Content>
                   </PrivateRoute>
-                  <PrivateRoute path='/Quiz-info/:quizId' exact>
+                  <PrivateRoute path='/quiz/:quizId' exact>
                     <Content
                       className='site-layout'
                       style={{

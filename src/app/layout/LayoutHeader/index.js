@@ -59,19 +59,15 @@ const getPageContent = (path) => {
     return '/edit-student'
   }
   else if (path.includes('/student-quiz')) {
-    console.log('HHHHHHHHHHHHHHHHHHHHHHHHHHH')
     return '/student-quiz'
   }
-  else if (path.includes('/Quiz-info/')) {
-    console.log('HHHHHHHHHHHHHHHHHHHHHHHHHHH')
+  else if (path.includes('/quiz/')) {
     return '/quiz-info'
   }
   else if (path.includes('/practice/')) {
-    console.log('HHHHHHHHHHHHHHHHHHHHHHHHHHH')
     return '/practice'
   }
   else if (path.includes('/add-questions/')) {
-    console.log('HHHHHHHHHHHHHHHHHHHHHHHHHHH')
     return '/add-questions'
   }
   else if (path.includes('/edit-test-info/')) {
@@ -84,8 +80,10 @@ const getPageContent = (path) => {
     return '/preview-test/not-allow-edit'
   }
   else if (path.includes('/student-practice') || path.includes('/practice-history')) {
-    console.log('HHHHHHHHHHHHHHHHHHHHHHHHHHH')
     return '/student-practice'
+  }
+  else if (path.includes('/test-track/')) {
+    return '/test-track'
   }
   else {
     return path

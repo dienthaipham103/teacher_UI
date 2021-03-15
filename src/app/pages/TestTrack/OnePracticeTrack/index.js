@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Row, Col, Button, PageHeader, Card, Typography, Skeleton, Tabs, Select, Space, Modal, Table, Tag } from 'antd';
-import { OneTestTrackWrapper } from './OneTestTrackStyle';
+import { OnePracticeTrackWrapper } from './OnePracticeTrackStyle';
 
 import { CardPractice } from 'app/components/CardPractice';
 import { FolderOutlined, FileTextOutlined, UserOutlined, FieldTimeOutlined } from '@ant-design/icons';
@@ -19,12 +19,13 @@ import {
     getListQuizAPI,
     getListExpiredQuizAPI,
     getDoneQuizListAPI,
+    getDonePracticeListAPI,
     getQuizInfoAPI
 } from 'app/api/quiz';
 import { xor } from 'lodash';
 
 
-function OneTestTrack() {
+function OnePracticeTrack() {
     const { Title } = Typography;
     const { TabPane } = Tabs;
     const { Option } = Select;
@@ -66,17 +67,28 @@ function OneTestTrack() {
 
     const getDoneList = async () => {
         try {
-            let res = await getDoneQuizListAPI({ id: id });
+            let res = await getDonePracticeListAPI({ id: id });
             console.log(res);
+
+            // const doneList = res.data.map((x) => ({
+            //     key: x._id,
+            //     id: x.user.ID,
+            //     name: x.user.fullname,
+            //     score: x.status === 'DONE' ? x.score : null,
+            //     status: x.status === 'DONE' ? "Đã hoàn thành" : "Chưa hoàn thành",
+            //     start: x.status === 'DONE' ? formatDate(new Date(x.startDate)) : null,
+            //     time: x.status === 'DONE' ? ((new Date(x.submitDate) - new Date(x.startDate)) / 60 / 1000).toFixed(2) : null
+            // }));
 
             const doneList = res.data.map((x) => ({
                 key: x._id,
-                id: x.user.ID,
-                name: x.user.fullname,
-                score: x.status === 'COMPLETED' ? x.score : null,
-                status: x.status === 'COMPLETED' ? "Đã hoàn thành" : "Chưa hoàn thành",
-                start: x.status === 'COMPLETED' ? formatDate(new Date(x.startDate)) : null,
-                time: x.status === 'COMPLETED' ? ((new Date(x.submitDate) - new Date(x.startDate)) / 60 / 1000).toFixed(2) : null
+                id: x.user !== null? x.user.ID: "Đã xóa",
+                name: x.user !== null? x.user.fullname: "Đã xóa",
+                score: x.status === 'DONE' ? x.score : null,
+                status: x.status === 'DONE' ? "Đã hoàn thành" : "Chưa hoàn thành",
+                // start: null,
+                // time: x.status === 'DONE' ? ((new Date(x.submitDate) - new Date(x.startDate)) / 60 / 1000).toFixed(2) : null
+                number: x.practice.length
             }));
             setData(doneList);
         } catch (error) {
@@ -93,7 +105,7 @@ function OneTestTrack() {
 
 
     return (
-        <OneTestTrackWrapper>
+        <OnePracticeTrackWrapper>
             <div style={{ marginBottom: '20px' }}>
                 <Card>
                     <Title level={4}>Tên đề: {quizName}</Title>
@@ -116,7 +128,7 @@ function OneTestTrack() {
                 onRow={(r) => ({
                     onClick: () => {
                         if (r.status === 'Đã hoàn thành'){
-                            history.push(`/test-track/test-result-review/${r.key}`);
+                            // history.push(`/test-track/test-result-review/${r.key}`);
                         }
                     }
                 })}
@@ -148,23 +160,23 @@ function OneTestTrack() {
                     dataIndex="status"
                     key="status"
                 />
-                <Column
+                {/* <Column
                     sorter={(a, b) => a.start - b.start}
                     sortDirections={["descend", "ascend"]}
                     title="Bắt đầu thi"
                     dataIndex="start"
                     key="start"
-                />
+                /> */}
                 <Column
-                    sorter={(a, b) => a.time - b.time}
+                    sorter={(a, b) => a.number - b.number}
                     sortDirections={["descend", "ascend"]}
-                    title="Thời gian làm bài (phút)"
-                    dataIndex="time"
-                    key="time"
+                    title="Số lần luyện tập"
+                    dataIndex="number"
+                    key="number"
                 />
             </Table>
-        </OneTestTrackWrapper>
+        </OnePracticeTrackWrapper>
     );
 }
 
-export default OneTestTrack;
+export default OnePracticeTrack;

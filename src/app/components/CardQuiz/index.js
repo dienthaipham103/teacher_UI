@@ -41,7 +41,7 @@ export const CardQuiz = ({
               history.push(`/student-quiz/${status}/${combinedId}/${quizId}`);
             }
             else{
-              history.push(`/Quiz-info/${quizId}`);
+              history.push(`/quiz/${quizId}`);
             }
             
           }

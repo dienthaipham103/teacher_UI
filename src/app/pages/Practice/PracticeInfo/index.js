@@ -4,6 +4,7 @@ import { Row, Col, Button, PageHeader, Card, Typography, Skeleton, Tabs, Select,
 import { openModal } from 'app/store/modal';
 import { PracticeInfoWrapper } from './PracticeInfoStyle';
 import { useParams, useHistory } from "react-router-dom";
+import ReactHtmlParser from 'react-html-parser';
 
 import { CardQuiz } from 'app/components/CardQuiz';
 import { getListQuizAPI } from 'app/api/quiz';
@@ -318,7 +319,8 @@ function PracticeInfo() {
                         </p>
 
                         <Card className="description-card">
-                            <p style={{textAlign: 'justify'}}>{description}</p>
+                            {/* <p style={{textAlign: 'justify'}}>{description}</p> */}
+                            <div>{ReactHtmlParser(description)}</div>
                         </Card>
                     </Col>
                 </Row>

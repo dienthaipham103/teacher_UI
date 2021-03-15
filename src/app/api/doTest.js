@@ -15,9 +15,6 @@ export const updateOneAnswerAPI = ({data, id}) => {
 export const submitAPI = ({id}) => {
     return axiosClient.post(`/test/process/submit/${id}`);
 }
-// export const changeUsernameAPI = ({username}) => {
-//     return axiosClient.put(`/user`, {username});
-// }
 
 
 export const getPracticeAPI = ({id}) => {
