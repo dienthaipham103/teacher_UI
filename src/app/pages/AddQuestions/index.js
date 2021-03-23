@@ -866,7 +866,7 @@ function AddQuestions() {
         <div>
             {
                 deleting === index_ + 1 ?
-                    <InputNumber min={1} max={10}
+                    <InputNumber min={1} max={26}
                         style={{ height: '34px', width: '60px', fontSize: '16px', fontWeight: '400' }}
                         defaultValue={current === questions.length ? null : questions[current - 1].numberOfAnswer}
                         onChange={onChangeAnswerNum}
@@ -880,7 +880,7 @@ function AddQuestions() {
         <div>
             {
                 index === current - 1 && adding === false && deleting === 0 ?
-                    <InputNumber min={1} max={10}
+                    <InputNumber min={1} max={26}
                         style={{ height: '34px', width: '60px', fontSize: '16px', fontWeight: '400' }}
                         defaultValue={question.numberOfAnswer}
                         onChange={onChangeAnswerNum}
@@ -897,7 +897,7 @@ function AddQuestions() {
             {
                 index === current - 1 && adding === true ?
 
-                    <InputNumber min={1} max={10}
+                    <InputNumber min={1} max={26}
                         style={{ height: '34px', width: '60px', fontSize: '16px', fontWeight: '400' }}
                         onChange={onChangeAnswerNum}
                     />
