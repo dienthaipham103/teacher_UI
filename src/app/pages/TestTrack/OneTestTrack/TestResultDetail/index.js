@@ -177,7 +177,7 @@ function TestResultDetail() {
     }
 
 
-    const options = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q'];
+    const options = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
     const oneAnswerRender = (number, multiple, choices) => {
         if (multiple === true) {
             const optionsRender = options.slice(0, number).map((x, index) => (
