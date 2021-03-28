@@ -437,7 +437,7 @@ function ViewResult() {
                                     >
                                         <Affix
                                             style={{
-                                                position: 'fixed',
+                                                // position: 'fixed',
                                                 bottom: 0,
                                                 paddingLeft: '30px',
                                                 paddingRight: '30px'

@@ -602,7 +602,8 @@ function StudentDoTest() {
                                                     }}
                                         >
                                             <Affix
-                                                style={{ position: 'fixed', 
+                                                style={{ 
+                                                        // position: 'fixed', 
                                                         bottom: 0, 
                                                         paddingLeft: '30px',
                                                         paddingRight: '30px'
